@@ -88,7 +88,7 @@ func main() {
 			f.Boot(log, stg)
 			h.Boot(log, stg)
 
-			if window, err := st.GetWindowStats(); err == nil {
+			if window, err := st.GetWindowStats(); err == nil && window != (store.WindowStats{}) {
 				runtime.WindowSetSize(ctx, window.Width, window.Height)
 				runtime.WindowSetPosition(ctx, window.X, window.Y)
 			}
