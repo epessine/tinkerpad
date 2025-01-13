@@ -7,6 +7,6 @@ if (is_file($cwd . '/vendor/autoload.php')) {
         $info = json_encode([
             'framework_name' => 'Composer',
             'php_version' => phpversion(),
-        ]) . PHP_EOL;
+        ]);
     }
 }

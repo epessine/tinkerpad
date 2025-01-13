@@ -13,6 +13,6 @@ if (is_file($cwd . '/symfony.lock') && is_file($cwd . '/src/Kernel.php')) {
             'framework_name' => 'Symfony',
             'framework_version' => \Symfony\Component\HttpKernel\Kernel::VERSION,
             'php_version' => phpversion(),
-        ]) . PHP_EOL;
+        ]);
     }
 }

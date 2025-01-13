@@ -16,6 +16,6 @@ if (is_file($cwd . '/wp-load.php')) {
             'framework_name' => 'WordPress',
             'framework_version' => $version,
             'php_version' => phpversion(),
-        ]) . PHP_EOL;
+        ]);
     }
 }

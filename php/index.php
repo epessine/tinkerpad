@@ -19,7 +19,7 @@ if ($code === null) {
     $info ??= json_encode([
         'framework_name' => 'PHP',
         'php_version' => phpversion(),
-    ]) . PHP_EOL;
+    ]);
 
     echo $info . PHP_EOL;
 
@@ -50,17 +50,27 @@ foreach ($casters as $class => $caster) {
     }
 }
 
-(fn () => $this->cloner = new Cloner())->call($config->getPresenter());
+(function (): void {
+    $this->cloner = new Cloner();
+})->call($config->getPresenter());
 
-$config->getPresenter()->addCasters(['*' => fn ($_, array $a): array => $a]);
+$config->getPresenter()->addCasters(['*' => function ($_, array $a): array {
+    return $a;
+}]);
 $config->getPresenter()->addCasters($casters);
 
 $output = new BufferedOutput();
+
 $shell = new Shell($config);
 
 $shell->setOutput($output);
-$shell->addInput(base64_decode($code));
 
-(new ExecutionLoopClosure($shell))->execute();
+try {
+    $shell->addInput(base64_decode($code));
+    
+    (new ExecutionLoopClosure($shell))->execute();
+} catch (\Throwable $th) {
+    $shell->writeException($th);
+}
 
 echo $output->fetch() . PHP_EOL;
