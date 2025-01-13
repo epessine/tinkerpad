@@ -40,14 +40,14 @@ func (proxy *Proxy) Run() {
 
 	go func() {
 		defer wg.Done()
-		if err := proxy.serverToWebsocket(); err != nil {
+		if err := proxy.serverToWebsocket(); err != nil && err.Error() != "EOF" {
 			proxy.ls.log.Errorf("server to websocket error: %v", err)
 		}
 	}()
 
 	go func() {
 		defer wg.Done()
-		if err := proxy.logStdErr(); err != nil {
+		if err := proxy.logStdErr(); err != nil && err.Error() != "EOF" {
 			proxy.ls.log.Errorf("error reading server stderr: %v", err)
 		}
 	}()

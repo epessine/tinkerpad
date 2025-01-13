@@ -53,9 +53,7 @@ func (php *Php) RunRemoteCode(uuid string, code string) string {
 		return ""
 	}
 
-	result, _ := cmd.Output()
-
-	php.log.Debugf("remote code result: %s", result)
+	result, _ := cmd.CombinedOutput()
 
 	return cleanOutput(string(result))
 }
@@ -64,11 +62,7 @@ func (php *Php) RunCode(cwd string, code string) string {
 	value := cleanCode(code)
 	cmd := exec.Command(php.settings.App.PhpBinaryPath, php.phpRunnerPath, cwd, value)
 
-	php.log.Debugf("running php: %s", cmd.String())
-
-	result, _ := cmd.Output()
-
-	php.log.Debugf("code result: %s", result)
+	result, _ := cmd.CombinedOutput()
 
 	return cleanOutput(string(result))
 }
@@ -82,11 +76,7 @@ func (php *Php) RunDockerCode(id string, code string) string {
 	value := cleanCode(code)
 	cmd := exec.Command(php.settings.App.DockerBinaryPath, "exec", info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir, value)
 
-	php.log.Debugf("running php via docker: %s", cmd.String())
-
-	result, _ := cmd.Output()
-
-	php.log.Debugf("docker code result: %s", result)
+	result, _ := cmd.CombinedOutput()
 
 	return cleanOutput(string(result))
 }
@@ -94,11 +84,10 @@ func (php *Php) RunDockerCode(id string, code string) string {
 func (php *Php) GetFrameworkInfo(cwd string) string {
 	cmd := exec.Command(php.settings.App.PhpBinaryPath, php.phpRunnerPath, cwd)
 
-	php.log.Debugf("running php: %s", cmd.String())
-
-	result, _ := cmd.Output()
-
-	php.log.Debugf("info result: %s", result)
+	result, err := cmd.Output()
+	if err != nil {
+		php.log.Errorf("error getting local framework info: %v", err)
+	}
 
 	return string(result)
 }
@@ -114,9 +103,17 @@ func (php *Php) GetRemoteFrameworkInfo(uuid string) string {
 		return ""
 	}
 
-	cmd, _ := conn.Client.Command(conn.Config.PhpBinaryPath, conn.PhpRunnerPath, conn.Config.WorkingDir)
+	cmd, err := conn.Client.Command(conn.Config.PhpBinaryPath, conn.PhpRunnerPath, conn.Config.WorkingDir)
+	if err != nil {
+		php.log.Errorf("error creating remote cmd: %v", err)
+		return ""
+	}
 
-	result, _ := cmd.Output()
+	result, err := cmd.Output()
+	if err != nil {
+		php.log.Errorf("error getting remote framework info: %v", err)
+		return ""
+	}
 
 	return cleanOutput(string(result))
 }
@@ -127,7 +124,10 @@ func (php *Php) GetDockerFrameworkInfo(id string) string {
 		return ""
 	}
 
-	result, _ := exec.Command(php.settings.App.DockerBinaryPath, "exec", info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir).Output()
+	result, err := exec.Command(php.settings.App.DockerBinaryPath, "exec", info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir).Output()
+	if err != nil {
+		php.log.Errorf("error getting docker framework info: %v", err)
+	}
 
 	return cleanOutput(string(result))
 }
