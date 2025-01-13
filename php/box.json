@@ -1,0 +1,4 @@
+{
+    "output": "../resources/bin/php.phar",
+    "compression": "GZ"
+}

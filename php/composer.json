@@ -1,0 +1,23 @@
+{
+    "name": "tinkerpad/php",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Tinkerpad\\Php\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Eduardo Pessine",
+            "email": "eduardopessine@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "psy/psysh": "^0.12.7"
+    },
+    "require-dev": {
+        "humbug/box": "^4.6"
+    }
+}

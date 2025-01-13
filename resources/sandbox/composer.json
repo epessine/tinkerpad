@@ -1,0 +1,11 @@
+{
+    "name": "tinkerpad/sandbox",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Eduardo Pessine",
+            "email": "eduardopessine@gmail.com"
+        }
+    ],
+    "require": {}
+}

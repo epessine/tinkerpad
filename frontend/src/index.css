@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+    overscroll-behavior: none;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+        'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.monaco-editor {
+    position: absolute !important;
+}
+
+.soft-scrollbar::-webkit-scrollbar {
+    @apply w-1 h-1 cursor-pointer;
+}
+.soft-scrollbar::-webkit-scrollbar-track {
+    @apply bg-gray-200 cursor-pointer;
+}
+.soft-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 cursor-pointer;
+}
+.dark .soft-scrollbar::-webkit-scrollbar-track {
+    @apply bg-gray-500 cursor-pointer;
+}
+.dark .soft-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 cursor-pointer;
+}

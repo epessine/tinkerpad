@@ -1,0 +1,110 @@
+name: Release macOS App
+
+on:
+    release:
+        types: [published]
+    workflow_dispatch:
+        inputs:
+            tag:
+                description: 'Version tag'
+                required: true
+                default: '1.0.0'
+
+jobs:
+    release:
+        name: macOS Release
+        runs-on: macos-latest
+        strategy:
+            matrix:
+                platform:
+                    - darwin/universal
+
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v3
+
+            - name: Normalise platform tag
+              id: normalise_platform
+              shell: bash
+              run: |
+                  tag=$(echo ${{ matrix.platform }} | sed -e 's/\//_/g' -e 's/darwin/mac/g' -e 's/amd64/intel/g')
+                  echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+            - name: Normalise version tag
+              id: normalise_version
+              shell: bash
+              run: |
+                  if [ "${{ github.event.release.tag_name }}" == "" ]; then
+                    version=$(echo ${{ github.event.inputs.tag }} | sed -e 's/v//g')
+                    echo "version=$version" >> "$GITHUB_OUTPUT"
+                  else
+                    version=$(echo ${{ github.event.release.tag_name }} | sed -e 's/v//g')
+                    echo "version=$version" >> "$GITHUB_OUTPUT"
+                  fi
+
+            - name: Setup Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: stable
+
+            - name: Install wails
+              shell: bash
+              run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.9.2
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+              with:
+                  bun-version: 1.1.x
+
+            - name: Build frontend
+              shell: bash
+              run: |
+                  jq '.info.productVersion = "${{ steps.normalise_version.outputs.version }}"' wails.json > tmp.json
+                  mv tmp.json wails.json
+                  cd frontend
+                  jq '.version = "${{ steps.normalise_version.outputs.version }}"' package.json > tmp.json
+                  mv tmp.json package.json
+                  bun install
+
+            - name: Build wails
+              shell: bash
+              run: |
+                  CGO_ENABLED=1 wails build -platform ${{ matrix.platform }} \
+                  -ldflags "-X main.version=${{ steps.normalise_version.outputs.version }}"
+
+            - name: Checkout create-image
+              uses: actions/checkout@v2
+              with:
+                  repository: create-dmg/create-dmg
+                  path: ./build/create-dmg
+                  ref: master
+
+            - name: Build .dmg
+              shell: bash
+              working-directory: ./build
+              run: |
+                  ./create-dmg/create-dmg \
+                    --no-internet-enable \
+                    --volname "Tinkerpad" \
+                    --volicon "bin/Tinkerpad.app/Contents/Resources/iconfile.icns" \
+                    --background "background.tiff" \
+                    --text-size 12 \
+                    --window-pos 400 400 \
+                    --window-size 660 450 \
+                    --icon-size 80 \
+                    --icon "Tinkerpad.app" 180 180 \
+                    --hide-extension "Tinkerpad.app" \
+                    --app-drop-link 480 180 \
+                    "bin/Tinkerpad-${{ steps.normalise_platform.outputs.tag }}.dmg" \
+                    "bin"
+
+            - name: Rename dmg
+              working-directory: ./build/bin
+              run: mv "Tinkerpad-${{ steps.normalise_platform.outputs.tag }}.dmg" "Tinkerpad_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.dmg"
+
+            - name: Upload release asset (DMG Package)
+              uses: softprops/action-gh-release@v1
+              with:
+                  tag_name: v${{ steps.normalise_version.outputs.version }}
+                  files: ./build/bin/Tinkerpad_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.dmg
+                  token: ${{ secrets.GITHUB_TOKEN }}
