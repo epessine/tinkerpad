@@ -57,7 +57,7 @@ func (php *Php) RunRemoteCode(uuid string, code string) string {
 
 	php.log.Debugf("remote code result: %s", result)
 
-	return strings.TrimPrefix(cleanOutput(string(result)), "> \n")
+	return cleanOutput(string(result))
 }
 
 func (php *Php) RunCode(cwd string, code string) string {
@@ -88,7 +88,7 @@ func (php *Php) RunDockerCode(id string, code string) string {
 
 	php.log.Debugf("docker code result: %s", result)
 
-	return strings.TrimPrefix(cleanOutput(string(result)), "> \n")
+	return cleanOutput(string(result))
 }
 
 func (php *Php) GetFrameworkInfo(cwd string) string {
@@ -118,7 +118,7 @@ func (php *Php) GetRemoteFrameworkInfo(uuid string) string {
 
 	result, _ := cmd.Output()
 
-	return strings.TrimPrefix(cleanOutput(string(result)), "> \n")
+	return cleanOutput(string(result))
 }
 
 func (php *Php) GetDockerFrameworkInfo(id string) string {
@@ -129,7 +129,7 @@ func (php *Php) GetDockerFrameworkInfo(id string) string {
 
 	result, _ := exec.Command(php.settings.App.DockerBinaryPath, "exec", info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir).Output()
 
-	return strings.TrimPrefix(cleanOutput(string(result)), "> \n")
+	return cleanOutput(string(result))
 }
 
 func removePHPComments(code string) string {
@@ -151,7 +151,7 @@ func cleanOutput(output string) string {
 	output = info.ReplaceAllString(output, "")
 	output = tabs.ReplaceAllString(output, "")
 
-	return strings.TrimSpace(output)
+	return strings.TrimPrefix(strings.TrimSpace(output), "> \n")
 }
 
 func cleanCode(code string) string {
