@@ -38,6 +38,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
 
         if (dir) {
             codeStore.setTabWorkingDir(props.tab.id, dir);
+            refetch();
         }
     };
 
