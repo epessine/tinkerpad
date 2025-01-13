@@ -15,7 +15,7 @@ type Storage struct {
 	Dir       string
 }
 
-var subDirs = []string{"logs"}
+var subDirs = []string{"logs", "store"}
 var binaries = []string{"phpactor", "php"}
 
 func New(resources embed.FS) *Storage {
