@@ -10,6 +10,7 @@ require 'vendor/autoload.php';
 
 $cwd = $argv[1];
 $code = $argv[2] ?? null;
+$shellSetups = [];
 
 require_once 'src/composer.php';
 require_once 'src/laravel.php';
@@ -59,11 +60,12 @@ $config->getPresenter()->addCasters(['*' => function ($_, array $a): array {
 }]);
 $config->getPresenter()->addCasters($casters);
 
-$output = new BufferedOutput();
-
 $shell = new Shell($config);
+$shell->setOutput($output = new BufferedOutput());
 
-$shell->setOutput($output);
+foreach ($shellSetups as $setup) {
+    $setup($shell);
+}
 
 try {
     $shell->addInput(base64_decode($code));

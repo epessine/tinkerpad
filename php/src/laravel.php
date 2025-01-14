@@ -1,22 +1,19 @@
 <?php
 
+use Psy\Shell;
+
 if (is_file($cwd . '/bootstrap/app.php')) {
     $app = require_once $cwd . '/bootstrap/app.php';
 
     $app->make('Illuminate\Contracts\Console\Kernel')->bootstrap();
 
-    $aliases = require_once $cwd . '/vendor/composer/autoload_classmap.php';
+    $shellSetups[] = function (Shell $shell) use ($cwd): void {
+        $classMap = $cwd . '/vendor/composer/autoload_classmap.php';
 
-    foreach ($aliases as $class => $path) {
-        if (!str_contains($class, '\\') || str_starts_with($path, $cwd . '/vendor')) {
-            continue;
+        if (file_exists($classMap) && class_exists('Laravel\Tinker\ClassAliasAutoloader')) {
+            Laravel\Tinker\ClassAliasAutoloader::register($shell, $classMap);
         }
-
-        try {
-            class_alias($class, class_basename($class));
-        } catch (\Throwable $th) {
-        }
-    }
+    };
 
     if ($code === null) {
         $info = json_encode([
