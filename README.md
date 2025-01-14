@@ -10,14 +10,27 @@
 [![GitHub stars](https://img.shields.io/github/stars/epessine/tinkerpad)](https://github.com/epessine/tinkerpad/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/epessine/tinkerpad)](https://github.com/epessine/tinkerpad/fork)
 
-<strong>Tinkerpad is a lightweight and fast PHP playground that works with Docker and SSH.</strong>
+<strong>Tinkerpad is an open source, lightweight and blazing fast PHP playground that works with Docker and SSH.</strong>
 </div>
+
+<picture>
+ <img alt="screenshot" src="screenshots/showcase-1.png">
+</picture>
+
+<picture>
+ <img alt="screenshot" src="screenshots/showcase-2.png">
+</picture>
+
+<picture>
+ <img alt="screenshot" src="screenshots/showcase-3.png">
+</picture>
 
 ## Features
 
 * Ultra lightweight and fast, built on Go and Webview2 (powered by [Wails](https://github.com/wailsapp/wails)).
 * User-friendly and modern UI, multiple light and dark themes.
 * Can run code via Docker containers, SSH connections and locally, all isolated by tabs.
+* Works with Laravel, Wordpress, Symphony, and more.
 * Save your favorite code snippets for later use!
 * Up to 100 snippets history to go back if needed.
 
