@@ -99,6 +99,10 @@ func (settings *Settings) GetData() *App {
 	return settings.App
 }
 
+func (settings *Settings) GetAppVersion() string {
+	return settings.appVersion
+}
+
 func (settings *Settings) Save(data *App) error {
 	settings.App = data
 	settingsData, err := json.Marshal(settings.App)

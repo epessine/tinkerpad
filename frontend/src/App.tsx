@@ -10,6 +10,7 @@ import Favorites from './components/Favorites';
 import History from './components/History';
 import SshConfig from './components/SshConfig';
 import DockerConfig from './components/DockerConfig';
+import { CheckUpdate } from '../wailsjs/go/updater/Updater';
 
 await initServices({
     serviceConfig: {
@@ -21,7 +22,10 @@ const App: Component = () => {
     const [generalStore] = useGeneralStore();
     let removeWindowResizeListener: () => void;
 
-    onMount(() => (removeWindowResizeListener = boot()));
+    onMount(() => {
+        removeWindowResizeListener = boot();
+        CheckUpdate();
+    });
     onCleanup(() => removeWindowResizeListener());
 
     registerHotkeys();

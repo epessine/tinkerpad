@@ -1,6 +1,6 @@
 module tinkerpad
 
-go 1.21
+go 1.22.0
 
 toolchain go1.23.3
 
@@ -41,6 +41,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/wailsapp/go-webview2 v1.0.16 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
+	golang.org/x/mod v0.22.0
 	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
 	golang.org/x/text v0.15.0 // indirect

@@ -8,6 +8,7 @@ import defaultThemeData from '../assets/themes/Nord.json';
 export enum SettingsTab {
     General = 'General',
     Editor = 'Editor',
+    Updates = 'Updates',
 }
 
 export enum Screen {
@@ -22,8 +23,6 @@ export enum Screen {
 const rawData = await GetData(store.StoreName.General);
 
 const newGeneralStore: GeneralStore = {
-    currentScreen: Screen.Code,
-    currentSettingsTab: SettingsTab.General,
     themeInfo: {
         name: Theme.Nord,
         colors: {
@@ -33,6 +32,8 @@ const newGeneralStore: GeneralStore = {
         },
     },
     ...(rawData && JSON.parse(rawData)),
+    currentScreen: Screen.Code,
+    currentSettingsTab: SettingsTab.General,
     setCurrentSettingsTab(tab: SettingsTab) {
         setGeneralStore('currentSettingsTab', tab);
     },

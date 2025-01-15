@@ -1,4 +1,4 @@
-import { Component } from 'solid-js';
+import { Component, Show } from 'solid-js';
 import Cog from './icons/Cog';
 import { WindowIsMaximised, WindowMaximise, WindowUnmaximise } from '../../wailsjs/runtime/runtime';
 import { createTooltip } from '../utils/tooltip/create';
@@ -6,9 +6,11 @@ import { listener } from '../utils/window-size/boot';
 import { Screen, useGeneralStore } from '../stores/general';
 import Star from './icons/Star';
 import History from './icons/History';
+import { useUpdateStore } from '../stores/update';
 
 const TitleBar: Component = () => {
     const [generalStore] = useGeneralStore();
+    const [updateStore] = useUpdateStore();
 
     createTooltip('#open-settings-button', 'Open settings');
     createTooltip('#open-favorites-button', 'Open favorites');
@@ -91,7 +93,7 @@ const TitleBar: Component = () => {
                                 : Screen.Settings,
                         )
                     }
-                    class="p-0.5 -mt-0.5 rounded-md hover:brightness-110"
+                    class="p-0.5 -mt-0.5 rounded-md hover:brightness-110 relative"
                     style={{
                         'background-color':
                             generalStore.themeInfo.colors[
@@ -106,6 +108,9 @@ const TitleBar: Component = () => {
                         ],
                     }}
                 >
+                    <Show when={updateStore.hasUpdate}>
+                        <div class="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-red-600"></div>
+                    </Show>
                     <Cog class="h-5 w-5 transition-all duration-75" />
                 </div>
             </div>

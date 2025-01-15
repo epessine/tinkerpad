@@ -1,11 +1,14 @@
-import { Component, For, Match, Switch } from 'solid-js';
+import { Component, For, Match, Show, Switch } from 'solid-js';
 import GeneralSettings from './GeneralSettings';
 import EditorSettings from './EditorSettings';
 import { SettingsTab, useGeneralStore } from '../stores/general';
 import Cog from './icons/Cog';
+import { useUpdateStore } from '../stores/update';
+import UpdateSettings from './UpdateSettings';
 
 const Settings: Component = () => {
     const [generalStore] = useGeneralStore();
+    const [updateStore] = useUpdateStore();
 
     return (
         <div
@@ -33,9 +36,13 @@ const Settings: Component = () => {
                                     item === generalStore.currentSettingsTab,
                                 'hover:brightness-125': item !== generalStore.currentSettingsTab,
                             }}
+                            class="relative"
                             on:click={() => generalStore.setCurrentSettingsTab(item)}
                         >
                             {item}
+                            <Show when={item === SettingsTab.Updates && updateStore.hasUpdate}>
+                                <div class="absolute w-1.5 h-1.5 rounded-full right-8 top-0.5 bg-red-600"></div>
+                            </Show>
                         </div>
                     )}
                 </For>
@@ -47,6 +54,9 @@ const Settings: Component = () => {
                     </Match>
                     <Match when={generalStore.currentSettingsTab === SettingsTab.Editor}>
                         <EditorSettings />
+                    </Match>
+                    <Match when={generalStore.currentSettingsTab === SettingsTab.Updates}>
+                        <UpdateSettings />
                     </Match>
                 </Switch>
             </div>

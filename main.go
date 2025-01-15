@@ -17,6 +17,7 @@ import (
 	"tinkerpad/backend/ssh"
 	"tinkerpad/backend/storage"
 	"tinkerpad/backend/store"
+	"tinkerpad/backend/updater"
 
 	"github.com/haroldadmin/pathfix"
 	"github.com/wailsapp/wails/v2"
@@ -53,6 +54,7 @@ func main() {
 	h := history.New()
 	sh := ssh.New()
 	dk := docker.New()
+	u := updater.New()
 
 	if err := stg.Boot(); err != nil {
 		golog.Fatalf("error on storage boot: %v", err)
@@ -87,6 +89,7 @@ func main() {
 			php.Boot(log, stg, sg, sh, dk)
 			f.Boot(log, stg)
 			h.Boot(log, stg)
+			u.Boot(ctx, sg, log)
 
 			if window, err := st.GetWindowStats(); err == nil && window != (store.WindowStats{}) {
 				runtime.WindowSetSize(ctx, window.Width, window.Height)
@@ -101,6 +104,14 @@ func main() {
 			}
 			return false
 		},
+		OnDomReady: func(ctx context.Context) {
+			go func() {
+				for {
+					time.Sleep(24 * time.Hour)
+					u.CheckUpdate()
+				}
+			}()
+		},
 		WindowStartState: options.Normal,
 		Bind: []interface{}{
 			sg,
@@ -111,6 +122,7 @@ func main() {
 			h,
 			sh,
 			dk,
+			u,
 		},
 		EnumBind: []interface{}{
 			store.Stores,
