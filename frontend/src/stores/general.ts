@@ -8,7 +8,7 @@ import defaultThemeData from '../assets/themes/Nord.json';
 export enum SettingsTab {
     General = 'General',
     Editor = 'Editor',
-    Updates = 'Updates',
+    About = 'About',
 }
 
 export enum Screen {

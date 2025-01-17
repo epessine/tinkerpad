@@ -1,16 +1,25 @@
-import { Component, Show } from 'solid-js';
+import { Component, createSignal, Show } from 'solid-js';
 import Cog from './icons/Cog';
-import { WindowIsMaximised, WindowMaximise, WindowUnmaximise } from '../../wailsjs/runtime/runtime';
+import {
+    Quit,
+    WindowIsMaximised,
+    WindowMaximise,
+    WindowUnmaximise,
+} from '../../wailsjs/runtime/runtime';
 import { createTooltip } from '../utils/tooltip/create';
 import { listener } from '../utils/window-size/boot';
 import { Screen, useGeneralStore } from '../stores/general';
 import Star from './icons/Star';
 import History from './icons/History';
 import { useUpdateStore } from '../stores/update';
+import { DownloadUpdate } from '../../wailsjs/go/updater/Updater';
+import { Info } from '../../wailsjs/go/dialog/Dialog';
+import LoaderCircle from './icons/LoaderCircle';
 
 const TitleBar: Component = () => {
     const [generalStore] = useGeneralStore();
     const [updateStore] = useUpdateStore();
+    const [isDownloading, setIsDownloading] = createSignal(false);
 
     createTooltip('#open-settings-button', 'Open settings');
     createTooltip('#open-favorites-button', 'Open favorites');
@@ -31,6 +40,26 @@ const TitleBar: Component = () => {
         >
             tinkerpad
             <div class="absolute top-2 flex right-2 gap-2">
+                <Show when={updateStore.hasUpdate}>
+                    <div
+                        on:click={async () => {
+                            setIsDownloading(true);
+                            try {
+                                await DownloadUpdate(updateStore.info!.url);
+                                Quit();
+                            } catch (error) {
+                                Info('Error downloading update.');
+                            }
+                            setIsDownloading(false);
+                        }}
+                        class="flex gap-1 items-center h-min text-xs px-2 font-semibold rounded-md -mt-[1px] mr-0.5 border p-0.5 hover:brightness-110"
+                    >
+                        <Show when={isDownloading()}>
+                            <LoaderCircle class="w-3 h-3 animate-spin" />
+                        </Show>
+                        Update
+                    </div>
+                </Show>
                 <div
                     id="open-history-button"
                     on:dblclick={e => e.stopPropagation()}
@@ -108,9 +137,6 @@ const TitleBar: Component = () => {
                         ],
                     }}
                 >
-                    <Show when={updateStore.hasUpdate}>
-                        <div class="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-red-600"></div>
-                    </Show>
                     <Cog class="h-5 w-5 transition-all duration-75" />
                 </div>
             </div>
