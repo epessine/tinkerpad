@@ -70,7 +70,7 @@ jobs:
               shell: bash
               run: |
                   CGO_ENABLED=1 wails build -platform ${{ matrix.platform }} \
-                  -ldflags "-X main.version=${{ steps.normalise_version.outputs.version }}"
+                  -ldflags "-X main.version=${{ steps.normalise_version.outputs.version }} -X tinkerpad/backend/encrypt.secret=${{ secrets.TINKERPAD_SECRET }}"
 
             - name: Checkout create-image
               uses: actions/checkout@v2

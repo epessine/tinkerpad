@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"slices"
 	"strings"
+	"tinkerpad/backend/encrypt"
 )
 
 type SshConnectionConfig struct {
@@ -72,6 +73,17 @@ func (s *Ssh) GetAll() Data {
 }
 
 func (s *Ssh) Save(data Data) error {
+	for i, c := range data.Configs {
+		_, err := encrypt.Decrypt(c.Password)
+		if c.Password != "" && err != nil {
+			c.Password, _ = encrypt.Encrypt(c.Password)
+		}
+		_, err = encrypt.Decrypt(c.Passphrase)
+		if c.Passphrase != "" && err != nil {
+			c.Passphrase, _ = encrypt.Encrypt(c.Passphrase)
+		}
+		data.Configs[i] = c
+	}
 	js, err := json.Marshal(data)
 	if err != nil {
 		return err

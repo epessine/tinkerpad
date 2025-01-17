@@ -6,6 +6,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"tinkerpad/backend/encrypt"
 	"tinkerpad/backend/logger"
 	"tinkerpad/backend/storage"
 
@@ -57,12 +58,20 @@ func (s *Ssh) createConnection(config SshConnectionConfig) (*SshConnection, erro
 	var auth goph.Auth
 	var err error
 	if config.AuthMethod == PrivateKey {
-		auth, err = goph.Key(config.PrivateKey, config.Passphrase)
+		pass, err := encrypt.Decrypt(config.Passphrase)
+		if err != nil {
+			return nil, err
+		}
+		auth, err = goph.Key(config.PrivateKey, pass)
 		if err != nil {
 			return nil, err
 		}
 	} else {
-		auth = goph.Password(config.Password)
+		pass, err := encrypt.Decrypt(config.Password)
+		if err != nil {
+			return nil, err
+		}
+		auth = goph.Password(pass)
 	}
 
 	client, err := goph.NewConn(&goph.Config{
