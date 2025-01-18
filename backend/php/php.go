@@ -45,7 +45,7 @@ func (php *Php) RunRemoteCode(uuid string, code string) string {
 		return ""
 	}
 
-	value := cleanCode(code)
+	value := encodeCode(code)
 
 	cmd, err := conn.Client.Command(conn.Config.PhpBinaryPath, conn.PhpRunnerPath, conn.Config.WorkingDir, value)
 	if err != nil {
@@ -59,7 +59,7 @@ func (php *Php) RunRemoteCode(uuid string, code string) string {
 }
 
 func (php *Php) RunCode(cwd string, code string) string {
-	value := cleanCode(code)
+	value := encodeCode(code)
 	cmd := exec.Command(php.settings.App.PhpBinaryPath, php.phpRunnerPath, cwd, value)
 
 	result, _ := cmd.CombinedOutput()
@@ -73,7 +73,7 @@ func (php *Php) RunDockerCode(id string, code string) string {
 		return ""
 	}
 
-	value := cleanCode(code)
+	value := encodeCode(code)
 	cmd := exec.Command(php.settings.App.DockerBinaryPath, "exec", info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir, value)
 
 	result, _ := cmd.CombinedOutput()
@@ -134,16 +134,6 @@ func (php *Php) GetDockerFrameworkInfo(id string) string {
 	return cleanOutput(string(result))
 }
 
-func removePHPComments(code string) string {
-	singleLine := regexp.MustCompile(`(?m)//.*$|#.*$`)
-	multiLine := regexp.MustCompile(`(?s)/\*.*?\*/`)
-
-	code = multiLine.ReplaceAllString(code, "")
-	code = singleLine.ReplaceAllString(code, "")
-
-	return code
-}
-
 func cleanOutput(output string) string {
 	exit := regexp.MustCompile(`(?s)(<aside.*?<\/aside>)|Exit:  Ctrl\+D`)
 	info := regexp.MustCompile(`(?s)(<whisper.*?<\/whisper>)|INFO  Ctrl\+D\.`)
@@ -156,7 +146,6 @@ func cleanOutput(output string) string {
 	return strings.TrimPrefix(strings.TrimSpace(output), "> \n")
 }
 
-func cleanCode(code string) string {
-	cleanedCode := removePHPComments(code)
-	return base64.StdEncoding.EncodeToString([]byte(strings.TrimPrefix(cleanedCode, "<?php")))
+func encodeCode(code string) string {
+	return base64.StdEncoding.EncodeToString([]byte(code))
 }

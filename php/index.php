@@ -68,7 +68,23 @@ foreach ($shellSetups as $setup) {
 }
 
 try {
-    $shell->addInput(base64_decode($code));
+    $cleanedCode = '';
+
+    foreach (token_get_all(base64_decode($code)) as $token) {
+        if (is_string($token)) {
+            $cleanedCode .= $token;
+
+            continue;
+        }
+        
+        if (in_array($token[0], [T_COMMENT, T_DOC_COMMENT, T_OPEN_TAG, T_CLOSE_TAG])) {
+            continue;
+        }
+
+        $cleanedCode .= $token[1];
+    }
+
+    $shell->addInput($cleanedCode);
     
     (new ExecutionLoopClosure($shell))->execute();
 } catch (\Throwable $th) {
