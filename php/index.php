@@ -1,12 +1,40 @@
 <?php
 
+use NunoMaduro\Collision\Writer;
 use Psy\Shell;
 use Psy\Configuration;
 use Psy\VarDumper\Cloner;
 use Psy\ExecutionLoopClosure;
+use Psy\Exception\BreakException;
+use Psy\Exception\ThrowUpException;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\VarDumper\VarDumper;
+use Whoops\Exception\Inspector;
 
 require 'vendor/autoload.php';
+
+class CustomShell extends Shell
+{
+    public ?Writer $writer;
+
+    public function __construct(?Configuration $config = null, ?Writer $writer = null)
+    {
+        parent::__construct($config);
+
+        $this->writer = $writer;
+    }
+
+    public function writeException(\Throwable $e)
+    {
+        if ($e instanceof BreakException) {
+            return;
+        }
+        
+        $this->writer->write(new Inspector($e));
+    }
+}
+
+$collision = (new \NunoMaduro\Collision\Provider)->register();
 
 $cwd = $argv[1];
 $code = $argv[2] ?? null;
@@ -30,6 +58,7 @@ if ($code === null) {
 $config = new Configuration([
     'updateCheck' => 'never',
     'configFile' => null,
+    'usePcntl' => false,
     'historySize' => 1,
     'interactiveMode' => Configuration::INTERACTIVE_MODE_DISABLED,
     'theme' => 'compact',
@@ -53,6 +82,15 @@ foreach ($casters as $class => $caster) {
 
 (function (): void {
     $this->cloner = new Cloner();
+    VarDumper::setHandler(function ($var, ?string $label = null) {
+        $var = $this->cloner->cloneVar($var);
+
+        if (null !== $label) {
+            $var = $var->withContext(['label' => $label]);
+        }
+
+        $this->dumper->dump($var);
+    });
 })->call($config->getPresenter());
 
 $config->getPresenter()->addCasters(['*' => function ($_, array $a): array {
@@ -60,8 +98,16 @@ $config->getPresenter()->addCasters(['*' => function ($_, array $a): array {
 }]);
 $config->getPresenter()->addCasters($casters);
 
-$shell = new Shell($config);
-$shell->setOutput($output = new BufferedOutput());
+$output = new BufferedOutput();
+
+$writer = $collision->getHandler()->getWriter();
+
+$writer->ignoreFilesIn(['/vendor/'])
+    ->showEditor(false)
+    ->setOutput($output);
+
+$shell = new CustomShell($config, $writer);
+$shell->setOutput($output);
 
 foreach ($shellSetups as $setup) {
     $setup($shell);
@@ -87,8 +133,10 @@ try {
     $shell->addInput($cleanedCode);
     
     (new ExecutionLoopClosure($shell))->execute();
+} catch (ThrowUpException $th) {
+    throw $th;
 } catch (\Throwable $th) {
     $shell->writeException($th);
 }
 
-echo $output->fetch() . PHP_EOL;
+echo trim($output->fetch());

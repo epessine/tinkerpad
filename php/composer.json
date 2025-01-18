@@ -15,7 +15,8 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "psy/psysh": "^0.12.7"
+        "psy/psysh": "^0.12.7",
+        "nunomaduro/collision": "^8.5"
     },
     "require-dev": {
         "humbug/box": "^4.6"
