@@ -84,7 +84,7 @@ func main() {
 			d.Boot(ctx, log, sg)
 			st.Boot(log, stg)
 			ls.Boot(log, stg, sg)
-			sh.Boot(log, stg)
+			sh.Boot(log, stg, sg)
 			dk.Boot(log, stg, sg)
 			php.Boot(log, stg, sg, sh, dk)
 			f.Boot(log, stg)

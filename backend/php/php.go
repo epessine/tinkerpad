@@ -3,6 +3,7 @@ package php
 import (
 	"encoding/base64"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"tinkerpad/backend/docker"
@@ -74,7 +75,7 @@ func (php *Php) RunDockerCode(id string, code string) string {
 	}
 
 	value := encodeCode(code)
-	cmd := exec.Command(php.settings.App.DockerBinaryPath, "exec", info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir, value)
+	cmd := exec.Command(php.settings.App.DockerBinaryPath, "exec", "-w", filepath.Dir(info.PhpRunnerPath), info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir, value)
 
 	result, _ := cmd.CombinedOutput()
 
@@ -125,7 +126,7 @@ func (php *Php) GetDockerFrameworkInfo(id string) string {
 		return ""
 	}
 
-	result, err := exec.Command(php.settings.App.DockerBinaryPath, "exec", info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir).CombinedOutput()
+	result, err := exec.Command(php.settings.App.DockerBinaryPath, "exec", "-w", filepath.Dir(info.PhpRunnerPath), info.Id, info.PhpBinaryPath, info.PhpRunnerPath, info.WorkingDir).CombinedOutput()
 	if err != nil {
 		php.log.Errorf("error getting docker framework info: %v | %s", err, result)
 		return ""

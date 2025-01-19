@@ -8,6 +8,7 @@ import (
 	"time"
 	"tinkerpad/backend/encrypt"
 	"tinkerpad/backend/logger"
+	"tinkerpad/backend/settings"
 	"tinkerpad/backend/storage"
 
 	"github.com/google/uuid"
@@ -17,9 +18,10 @@ import (
 )
 
 type Ssh struct {
-	log     *logger.Logger
-	storage *storage.Storage
-	Conns   []*SshConnection
+	log      *logger.Logger
+	settings *settings.Settings
+	storage  *storage.Storage
+	Conns    []*SshConnection
 }
 
 type SshConnection struct {
@@ -33,9 +35,10 @@ func New() *Ssh {
 	return &Ssh{}
 }
 
-func (s *Ssh) Boot(log *logger.Logger, storage *storage.Storage) {
+func (s *Ssh) Boot(log *logger.Logger, storage *storage.Storage, settings *settings.Settings) {
 	s.log = log
 	s.storage = storage
+	s.settings = settings
 }
 
 func (s *Ssh) ConnExists(uuid string) bool {
@@ -94,7 +97,7 @@ func (s *Ssh) createConnection(config SshConnectionConfig) (*SshConnection, erro
 
 	go func() {
 		defer wg.Done()
-		path := "/tmp/tinkerpad-php.phar"
+		path := fmt.Sprintf("/tmp/tinkerpad-php-%s.phar", s.settings.GetAppVersion())
 		out, err := client.Run(fmt.Sprintf("test -f \"%s\" && echo true || echo false", path))
 		if err != nil || strings.TrimSpace(string(out)) == "false" {
 			if err = client.Upload(s.storage.GetPath("resources", "bin", "php.phar"), path); err != nil {

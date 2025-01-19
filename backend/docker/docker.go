@@ -97,7 +97,7 @@ func (d *Docker) Connect(info ContainerInfo) (string, error) {
 	}
 
 	localPath := d.storage.GetPath("resources", "bin", "php.phar")
-	remoteRunnerPath := "/tmp/tinkerpad-php.phar"
+	remoteRunnerPath := fmt.Sprintf("/tmp/tinkerpad-php-%s.phar", d.settings.GetAppVersion())
 	_, err = exec.Command(d.settings.App.DockerBinaryPath, "cp", localPath, fmt.Sprintf("%s:%s", info.Id, remoteRunnerPath)).Output()
 	if err != nil {
 		return "", err

@@ -46,11 +46,25 @@ export const createEditor = (
 
     let editorModel = monaco.editor.getModel(monaco.Uri.file(file));
 
+    const getParsedResult = () => {
+        if (!result) {
+            return null;
+        }
+
+        try {
+            return JSON.parse(tab.result!)
+                .map((v: any) => v.raw)
+                .join('\n');
+        } catch (error) {
+            return null;
+        }
+    };
+
     if (editorModel === null) {
-        const code = result ? tab.result! : tab.code;
+        const code = result ? getParsedResult() : tab.code;
         editorModel = monaco.editor.createModel(code, 'php', monaco.Uri.file(file));
     } else if (result) {
-        editorModel.setValue(tab.result!);
+        editorModel.setValue(getParsedResult());
     }
 
     editor.setModel(editorModel);
