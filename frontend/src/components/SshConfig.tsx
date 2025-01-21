@@ -35,9 +35,10 @@ const SshConfig: Component = () => {
         await Save(data()!);
         await refetch();
 
-        if (!connect) {
-            setSelectedConfig(data()?.configs.find(c => c.uuid === config.uuid));
+        config = data()?.configs.find(c => c.uuid === config.uuid)!;
+        setSelectedConfig(config);
 
+        if (!connect) {
             return;
         }
 

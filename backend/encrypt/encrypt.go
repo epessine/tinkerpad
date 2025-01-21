@@ -12,7 +12,7 @@ import (
 var secret = ""
 
 func Encrypt(v string) (string, error) {
-	if secret == "" {
+	if secret == "" || v == "" {
 		return v, nil
 	}
 
@@ -34,7 +34,7 @@ func Encrypt(v string) (string, error) {
 }
 
 func Decrypt(encrypted string) (string, error) {
-	if secret == "" {
+	if secret == "" || encrypted == "" {
 		return encrypted, nil
 	}
 
