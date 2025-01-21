@@ -19,16 +19,18 @@ const filename = "containers.json"
 
 func (d *Docker) GetAll() []ContainerInfo {
 	infos := []ContainerInfo{}
+	savedInfos := []ContainerInfo{}
 	js, err := d.storage.Load(filename)
 	if err == nil {
-		if err = json.Unmarshal(js, &infos); err != nil {
+		if err = json.Unmarshal(js, &savedInfos); err != nil {
 			d.log.Errorf("failed to unmarshal docker containers: %v", err)
 		}
 	}
 	for _, rc := range d.GetRunningContainers() {
-		if slices.ContainsFunc(infos, func(i ContainerInfo) bool {
+		if rci := slices.IndexFunc(savedInfos, func(i ContainerInfo) bool {
 			return i.Id == rc.Id
-		}) {
+		}); rci != -1 {
+			infos = append(infos, savedInfos[rci])
 			continue
 		}
 		infos = append(infos, rc)
