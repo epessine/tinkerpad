@@ -35,6 +35,7 @@ const getNewTab = (): Tab => {
         workingDir: settingsStore.app.defaultWorkingDir,
         code: '<?php\n\n',
         loading: false,
+        size: 50,
     };
 };
 
@@ -83,6 +84,9 @@ const newCodeStore: CodeStore = {
     },
     setTabCode(tabId: string, code: string) {
         setStore('tabs', tab => tab.id === tabId, 'code', code);
+    },
+    setTabSize(tabId: string, size: number) {
+        setStore('tabs', tab => tab.id === tabId, 'size', size);
     },
     setTabResult(tabId: string, result: string) {
         setStore('tabs', tab => tab.id === tabId, 'result', result);
@@ -171,6 +175,7 @@ export interface CodeStore {
     setCurrentTab(tabId: string): void;
     closeTab(tabId: string): void;
     setTabCode(tabId: string, code: string): void;
+    setTabSize(tabId: string, size: number): void;
     setTabResult(tabId: string, result: string): void;
     setTabLoading(tabId: string, isLoading: boolean): void;
     setTabWorkingDir(tabId: string, workingDir: string): void;
@@ -196,6 +201,7 @@ export interface Tab {
     loading: boolean;
     sshConn?: SSHConnection;
     containerInfo?: models.docker.ContainerInfo;
+    size?: number;
 }
 
 export const useCodeStore = (): [CodeStore, SetStoreFunction<CodeStore>] => [store, setStore];

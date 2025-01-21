@@ -25,6 +25,7 @@
         "monaco-editor-wrapper": "~5.4.0",
         "monaco-languageclient": "~8.7.0",
         "solid-js": "^1.5.1",
+        "split.js": "^1.6.5",
         "tippy.js": "^6.3.7",
         "uuid": "^11.0.3",
         "vscode-languageclient": "^9.0.1",

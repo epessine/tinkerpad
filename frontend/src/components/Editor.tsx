@@ -54,7 +54,7 @@ const Editor: Component<{ tab: Tab }> = props => {
                     props.tab.result !== undefined &&
                     codeStore.isHorizontalLayout,
             }}
-            class="grow"
+            class="h-full w-full"
             style={{
                 'background-color': generalStore.themeInfo.colors.background,
                 'border-color': generalStore.themeInfo.colors.secondary,

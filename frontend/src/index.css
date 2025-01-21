@@ -39,3 +39,11 @@ code {
 .dark .soft-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-gray-700 cursor-pointer;
 }
+
+.gutter-horizontal {
+    cursor: col-resize;
+}
+
+.gutter-vertical {
+    cursor: row-resize;
+}

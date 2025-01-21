@@ -20,7 +20,7 @@ const Result: Component<{ tab: Tab }> = props => {
 
     return (
         <div
-            class="grow"
+            class="h-full w-full"
             style={{ 'background-color': generalStore.themeInfo.colors.background }}
             ref={container}
         ></div>
