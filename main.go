@@ -97,20 +97,18 @@ func main() {
 			}
 
 			go ls.Start()
+
+			go func() {
+				for range time.Tick(8 * time.Hour) {
+					u.CheckUpdate()
+				}
+			}()
 		},
 		OnBeforeClose: func(ctx context.Context) (prevent bool) {
 			for _, conn := range sh.Conns {
 				conn.Client.Close()
 			}
 			return false
-		},
-		OnDomReady: func(ctx context.Context) {
-			go func() {
-				for {
-					time.Sleep(24 * time.Hour)
-					u.CheckUpdate()
-				}
-			}()
 		},
 		WindowStartState: options.Normal,
 		Bind: []interface{}{
