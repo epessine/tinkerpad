@@ -40,7 +40,7 @@ class Runner
 
     protected int $peakMemoryUsage = 0;
 
-    protected float $time;
+    protected float $time = 0;
 
     public function __construct(array $argv)
     {
@@ -156,7 +156,7 @@ class Runner
             
             $var = (new ExecutionClosure($this->shell))->execute();
 
-            if ($var && !($var instanceof NoReturnValue)) {
+            if (isset($var) && !($var instanceof NoReturnValue)) {
                 $this->addOutput($var);
             }
         } catch (ThrowUpException $th) {

@@ -15,13 +15,13 @@ try {
 
         return;
     }
-
-    echo json_encode([
-        'outputs' => $runner->run()->getOutputs(),
-        'runAt' => $runAt,
-        'time' => $runner->getTime(),
-        'peakMemoryUsage' => $runner->getPeakMemoryUsage(),
-    ]);
 } catch (\Throwable $th) {
-    echo $th->getMessage();
+    $runner->addOutput($th);
 }
+
+echo json_encode([
+    'outputs' => $runner->run()->getOutputs(),
+    'runAt' => $runAt,
+    'time' => $runner->getTime(),
+    'peakMemoryUsage' => $runner->getPeakMemoryUsage(),
+]);

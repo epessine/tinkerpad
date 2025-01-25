@@ -29,13 +29,13 @@ class ExecutionClosure extends PsyExecutionClosure
                 $time = \microtime(true);
 
                 $result = eval($shell->onExecute($shell->flushCode() ?: ExecutionClosure::NOOP_INPUT));
-
-                Runner::getInstance()->setTime(\microtime(true) - $time);
-                Runner::getInstance()->setPeakMemoryUsage(\memory_get_peak_usage() - $memory);
             } catch (\Throwable $_e) {
                 if (\ob_get_level() > 0) {
                     \ob_end_clean();
                 }
+
+                Runner::getInstance()->setTime(\microtime(true) - $time);
+                Runner::getInstance()->setPeakMemoryUsage(\memory_get_peak_usage() - $memory);
 
                 throw $_e;
             } finally {

@@ -104,7 +104,7 @@ const newCodeStore: CodeStore = {
         try {
             setStore('tabs', tab => tab.id === tabId, 'result', JSON.parse(result) as TabResult);
         } catch (error) {
-            console.error(error);
+            console.error(error, result);
             setStore('tabs', tab => tab.id === tabId, 'result', undefined);
         }
     },
