@@ -101,7 +101,12 @@ const newCodeStore: CodeStore = {
         setStore('tabs', tab => tab.id === tabId, 'size', size);
     },
     setTabResult(tabId: string, result: string) {
-        setStore('tabs', tab => tab.id === tabId, 'result', result);
+        try {
+            setStore('tabs', tab => tab.id === tabId, 'result', JSON.parse(result) as TabResult);
+        } catch (error) {
+            console.error(error);
+            setStore('tabs', tab => tab.id === tabId, 'result', undefined);
+        }
     },
     setTabLoading(tabId: string, isLoading: boolean) {
         setStore('tabs', tab => tab.id === tabId, 'loading', isLoading);
@@ -152,8 +157,8 @@ const newCodeStore: CodeStore = {
               ? await RunRemoteCode(tab.sshConn.uuid, tab.code)
               : await RunCode(tab.workingDir, tab.code);
 
-        store.setTabResult(tab.id, result);
         store.setTabLoading(tab.id, false);
+        store.setTabResult(tab.id, result);
         setStore('showResult', true);
     },
     get currentTab(): Tab {
@@ -167,6 +172,7 @@ const newCodeStore: CodeStore = {
 newCodeStore.tabs = await Promise.all(
     newCodeStore.tabs.map(async t => ({
         ...t,
+        loading: false,
         sshConn: t.sshConn
             ? (await ConnExists(t.sshConn?.uuid))
                 ? t.sshConn
@@ -214,11 +220,18 @@ export interface Tab {
     id: string;
     workingDir: string;
     code: string;
-    result?: string;
+    result?: TabResult;
     loading: boolean;
     sshConn?: SSHConnection;
     containerInfo?: models.docker.ContainerInfo;
     size?: number;
+}
+
+export interface TabResult {
+    outputs: { html: string; raw: string }[];
+    time: number;
+    peakMemoryUsage: number;
+    runAt: number;
 }
 
 export const useCodeStore = (): [CodeStore, SetStoreFunction<CodeStore>] => [store, setStore];

@@ -17,6 +17,8 @@ import ServerOff from './icons/ServerOff';
 import Docker from './icons/Docker';
 import FileJson from './icons/FileJson';
 import FileBox from './icons/FileBox';
+import Cpu from './icons/Cpu';
+import Timer from './icons/Timer';
 
 export type FrameworkInfo = {
     framework_name: string;
@@ -54,12 +56,22 @@ const StatusBar: Component<{ tab: Tab }> = props => {
             ? createTooltip('#disconnect-docker-button', 'Disconnect Docker')
             : createTooltip('#connect-docker-button', 'Connect Docker'),
     );
+    createEffect(
+        () =>
+            codeStore.showResult &&
+            createTooltip('#toggle-result-type-button', 'Toggle result type'),
+    );
+    createEffect(() => {
+        if (codeStore.showResult && props.tab.result) {
+            createTooltip('#memory-usage', 'Peak Memory Usage');
+            createTooltip('#run-time', 'Run time');
+        }
+    });
 
     createTooltip('#set-workdir-button', 'Select project');
     createTooltip('#toggle-layout-button', 'Toggle layout');
     createTooltip('#toggle-result-button', 'Toggle output');
     createTooltip('#run-code-button', 'Run code');
-    createTooltip('#toggle-result-type-button', 'Toggle result type');
 
     return (
         <div
@@ -187,27 +199,59 @@ const StatusBar: Component<{ tab: Tab }> = props => {
 
             <div class="flex">
                 <Show when={codeStore.showResult}>
-                    <div
-                        id="toggle-result-type-button"
-                        on:click={() =>
-                            codeStore.setOutputType(
-                                codeStore.outputType === OutputType.Raw
-                                    ? OutputType.Structured
-                                    : OutputType.Raw,
-                            )
-                        }
-                        class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
-                        style={{ 'background-color': generalStore.themeInfo.colors.background }}
-                    >
-                        <Switch>
-                            <Match when={codeStore.outputType === OutputType.Raw}>
-                                <FileJson class="w-4 inline -mt-0.5" />
-                            </Match>
-                            <Match when={codeStore.outputType === OutputType.Structured}>
-                                <FileBox class="w-4 inline -mt-0.5" />
-                            </Match>
-                        </Switch>
-                    </div>
+                    <>
+                        <Show when={props.tab.result} keyed>
+                            {res =>
+                                typeof res !== 'string' && (
+                                    <>
+                                        <div
+                                            id="run-time"
+                                            class="py-2 px-5 w-min text-center whitespace-nowrap select-none"
+                                            style={{
+                                                'background-color':
+                                                    generalStore.themeInfo.colors.background,
+                                            }}
+                                        >
+                                            <Timer class="w-4 inline -mt-0.5 mr-1.5" />
+                                            {(res.time * 1000).toFixed(3)} ms
+                                        </div>
+                                        <div
+                                            id="memory-usage"
+                                            class="py-2 px-5 w-min text-center whitespace-nowrap select-none"
+                                            style={{
+                                                'background-color':
+                                                    generalStore.themeInfo.colors.background,
+                                            }}
+                                        >
+                                            <Cpu class="w-4 inline -mt-0.5 mr-1.5" />
+                                            {(res.peakMemoryUsage / 1024 / 1024).toFixed(2)} MB
+                                        </div>
+                                    </>
+                                )
+                            }
+                        </Show>
+                        <div
+                            id="toggle-result-type-button"
+                            on:click={() =>
+                                codeStore.setOutputType(
+                                    codeStore.outputType === OutputType.Raw
+                                        ? OutputType.Structured
+                                        : OutputType.Raw,
+                                )
+                            }
+                            class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
+                            style={{ 'background-color': generalStore.themeInfo.colors.background }}
+                        >
+                            <Switch>
+                                <Match when={codeStore.outputType === OutputType.Raw}>
+                                    <FileJson class="w-4 inline -mt-0.5" />
+                                </Match>
+                                <Match when={codeStore.outputType === OutputType.Structured}>
+                                    <FileBox class="w-4 inline -mt-0.5" />
+                                </Match>
+                            </Switch>
+                        </div>
+                    </>
                 </Show>
                 <div
                     id="toggle-result-button"
@@ -242,7 +286,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                     style={{ 'background-color': generalStore.themeInfo.colors.background }}
                 >
                     <Show
-                        when={!props.tab.loading}
+                        when={props.tab.loading === false}
                         fallback={<LoaderCircle class="w-4 inline -mt-0.5 animate-spin" />}
                     >
                         <SquarePlay class="w-4 inline -mt-0.5" />

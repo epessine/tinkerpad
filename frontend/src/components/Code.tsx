@@ -43,27 +43,30 @@ const Code: Component = () => {
                             <div class="grow" ref={leftPane}>
                                 <Editor tab={tab} />
                             </div>
-                            <Show when={codeStore.showResult && tab.result} keyed>
-                                {_ => (
-                                    <div class="grow" ref={rightPane}>
-                                        <Switch>
-                                            <Match
-                                                keyed
-                                                when={codeStore.outputType === OutputType.Raw}
-                                            >
-                                                {_ => <Result tab={tab} />}
-                                            </Match>
-                                            <Match
-                                                keyed
-                                                when={
-                                                    codeStore.outputType === OutputType.Structured
-                                                }
-                                            >
-                                                {_ => <StructuredResult tab={tab} />}
-                                            </Match>
-                                        </Switch>
-                                    </div>
-                                )}
+                            <Show when={codeStore.showResult}>
+                                <Show when={tab.result} keyed>
+                                    {result => (
+                                        <div class="grow" ref={rightPane}>
+                                            <Switch>
+                                                <Match
+                                                    keyed
+                                                    when={codeStore.outputType === OutputType.Raw}
+                                                >
+                                                    {_ => <Result tab={tab} />}
+                                                </Match>
+                                                <Match
+                                                    keyed
+                                                    when={
+                                                        codeStore.outputType ===
+                                                        OutputType.Structured
+                                                    }
+                                                >
+                                                    {_ => <StructuredResult result={result} />}
+                                                </Match>
+                                            </Switch>
+                                        </div>
+                                    )}
+                                </Show>
                             </Show>
                         </>
                     )}

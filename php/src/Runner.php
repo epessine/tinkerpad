@@ -38,6 +38,10 @@ class Runner
 
     protected array $outputs = [];
 
+    protected int $peakMemoryUsage = 0;
+
+    protected float $time;
+
     public function __construct(array $argv)
     {
         $this->cwd = $argv[1];
@@ -88,6 +92,30 @@ class Runner
         ];
 
         return $this;
+    }
+
+    public function setPeakMemoryUsage(int $peakMemoryUsage): self
+    {
+        $this->peakMemoryUsage = $peakMemoryUsage;
+
+        return $this;
+    }
+
+    public function getPeakMemoryUsage(): int
+    {
+        return $this->peakMemoryUsage;
+    }
+
+    public function setTime(float $time): self
+    {
+        $this->time = $time;
+
+        return $this;
+    }
+
+    public function getTime(): float
+    {
+        return $this->time;
     }
 
     public function boot(): self

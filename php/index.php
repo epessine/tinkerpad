@@ -5,6 +5,8 @@ use Tinkerpad\Php\Runner;
 require 'src/overrides.php';
 require 'vendor/autoload.php';
 
+$runAt = microtime(true);
+
 try {
     $runner = (new Runner($argv))->boot();
     
@@ -14,7 +16,12 @@ try {
         return;
     }
 
-    echo json_encode($runner->run()->getOutputs());
+    echo json_encode([
+        'outputs' => $runner->run()->getOutputs(),
+        'runAt' => $runAt,
+        'time' => $runner->getTime(),
+        'peakMemoryUsage' => $runner->getPeakMemoryUsage(),
+    ]);
 } catch (\Throwable $th) {
     echo $th->getMessage();
 }

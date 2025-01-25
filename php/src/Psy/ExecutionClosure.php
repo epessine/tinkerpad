@@ -25,7 +25,13 @@ class ExecutionClosure extends PsyExecutionClosure
 
                 \set_error_handler([$shell, 'handleError']);
 
+                $memory = \memory_get_usage();
+                $time = \microtime(true);
+
                 $result = eval($shell->onExecute($shell->flushCode() ?: ExecutionClosure::NOOP_INPUT));
+
+                Runner::getInstance()->setTime(\microtime(true) - $time);
+                Runner::getInstance()->setPeakMemoryUsage(\memory_get_peak_usage() - $memory);
             } catch (\Throwable $_e) {
                 if (\ob_get_level() > 0) {
                     \ob_end_clean();

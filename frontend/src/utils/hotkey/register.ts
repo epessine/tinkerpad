@@ -32,7 +32,10 @@ const registerHotkey = (action: HotkeyAction, config: HotkeyConfig) => {
 };
 
 const registerHotkeys = () => {
-    registerHotkey(() => codeStore.runCode(codeStore.currentTab), { key: 'r', metaKey: true });
+    registerHotkey(() => codeStore.currentTab.loading || codeStore.runCode(codeStore.currentTab), {
+        key: 'r',
+        metaKey: true,
+    });
     registerHotkey(() => codeStore.createNewTab(true), { key: 't', metaKey: true });
     registerHotkey(() => codeStore.closeTab(codeStore.currentTabId), { key: 'w', metaKey: true });
     registerHotkey(codeStore.toggleLayout, { key: 'l', ctrlKey: true });

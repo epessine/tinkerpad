@@ -47,16 +47,16 @@ export const createEditor = (
     let editorModel = monaco.editor.getModel(monaco.Uri.file(file));
 
     const getParsedResult = () => {
-        if (!result) {
-            return null;
-        }
-
         try {
-            return JSON.parse(tab.result!)
-                .map((v: any) => v.raw)
-                .join('\n');
+            if (typeof tab.result === 'string') {
+                return JSON.parse(tab.result)
+                    .map((v: any) => v.raw)
+                    .join('\n') as string;
+            }
+
+            return tab.result!.outputs.map(v => v.raw).join('\n');
         } catch (error) {
-            return null;
+            return '';
         }
     };
 
