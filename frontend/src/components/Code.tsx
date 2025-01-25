@@ -49,13 +49,11 @@ const Code: Component = () => {
                                         <div class="grow" ref={rightPane}>
                                             <Switch>
                                                 <Match
-                                                    keyed
                                                     when={codeStore.outputType === OutputType.Raw}
                                                 >
                                                     {_ => <Result tab={tab} />}
                                                 </Match>
                                                 <Match
-                                                    keyed
                                                     when={
                                                         codeStore.outputType ===
                                                         OutputType.Structured

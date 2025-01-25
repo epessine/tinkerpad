@@ -34,12 +34,12 @@ class ExecutionClosure extends PsyExecutionClosure
                     \ob_end_clean();
                 }
 
-                Runner::getInstance()->setTime(\microtime(true) - $time);
-                Runner::getInstance()->setPeakMemoryUsage(\memory_get_peak_usage() - $memory);
-
                 throw $_e;
             } finally {
                 \restore_error_handler();
+
+                Runner::getInstance()->setTime(\microtime(true) - $time);
+                Runner::getInstance()->setPeakMemoryUsage(\memory_get_peak_usage() - $memory);
             }
 
             \ob_end_clean();

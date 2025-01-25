@@ -1,4 +1,4 @@
-import { Component, onCleanup, onMount } from 'solid-js';
+import { Component, createEffect, onCleanup, onMount } from 'solid-js';
 import * as monaco from 'monaco-editor';
 import { Tab } from '../stores/code';
 import { createEditor } from '../utils/editor/create';
@@ -15,6 +15,8 @@ const Result: Component<{ tab: Tab }> = props => {
 
         editor = createEditor(container, file, props.tab, true);
     });
+
+    createEffect(() => editor.setValue(props.tab.result!.outputs.map(v => v.raw).join('\n')));
 
     onCleanup(async () => editor?.dispose());
 
