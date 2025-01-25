@@ -1,7 +1,7 @@
-import { Component, createEffect, createResource, Show } from 'solid-js';
+import { Component, createEffect, createResource, Match, Show, Switch } from 'solid-js';
 import FolderCode from './icons/FolderCode';
 import SquarePlay from './icons/SquarePlay';
-import { Tab, useCodeStore } from '../stores/code';
+import { OutputType, Tab, useCodeStore } from '../stores/code';
 import LoaderCircle from './icons/LoaderCircle';
 import Code from './icons/Code';
 import { SelectDir } from '../../wailsjs/go/dialog/Dialog';
@@ -15,6 +15,8 @@ import Server from './icons/Server';
 import { ConnExists, RemoveConn } from '../../wailsjs/go/ssh/Ssh';
 import ServerOff from './icons/ServerOff';
 import Docker from './icons/Docker';
+import FileJson from './icons/FileJson';
+import FileBox from './icons/FileBox';
 
 export type FrameworkInfo = {
     framework_name: string;
@@ -57,6 +59,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
     createTooltip('#toggle-layout-button', 'Toggle layout');
     createTooltip('#toggle-result-button', 'Toggle output');
     createTooltip('#run-code-button', 'Run code');
+    createTooltip('#toggle-result-type-button', 'Toggle result type');
 
     return (
         <div
@@ -183,6 +186,29 @@ const StatusBar: Component<{ tab: Tab }> = props => {
             </div>
 
             <div class="flex">
+                <Show when={codeStore.showResult}>
+                    <div
+                        id="toggle-result-type-button"
+                        on:click={() =>
+                            codeStore.setOutputType(
+                                codeStore.outputType === OutputType.Raw
+                                    ? OutputType.Structured
+                                    : OutputType.Raw,
+                            )
+                        }
+                        class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
+                        style={{ 'background-color': generalStore.themeInfo.colors.background }}
+                    >
+                        <Switch>
+                            <Match when={codeStore.outputType === OutputType.Raw}>
+                                <FileJson class="w-4 inline -mt-0.5" />
+                            </Match>
+                            <Match when={codeStore.outputType === OutputType.Structured}>
+                                <FileBox class="w-4 inline -mt-0.5" />
+                            </Match>
+                        </Switch>
+                    </div>
+                </Show>
                 <div
                     id="toggle-result-button"
                     on:click={codeStore.toggleResult}

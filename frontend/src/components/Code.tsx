@@ -1,10 +1,11 @@
-import { Component, createEffect, onCleanup, Show } from 'solid-js';
+import { Component, createEffect, Match, onCleanup, Show, Switch } from 'solid-js';
 import Editor from './Editor';
 import Tabs from './Tabs';
 import StatusBar from './StatusBar';
-import { useCodeStore } from '../stores/code';
+import { OutputType, useCodeStore } from '../stores/code';
 import Result from './Result';
 import Split from 'split.js';
+import StructuredResult from './StructuredResult';
 
 const Code: Component = () => {
     const [codeStore] = useCodeStore();
@@ -31,19 +32,40 @@ const Code: Component = () => {
     return (
         <div class="flex flex-col grow w-full gap-1">
             <Tabs tabs={codeStore.tabs} currentTab={codeStore.currentTab} />
-            <div class="flex grow" classList={{ 'flex-col': !codeStore.isHorizontalLayout }}>
+            <div
+                class="flex grow"
+                style="max-height: calc(100vh - 7.5rem)"
+                classList={{ 'flex-col': !codeStore.isHorizontalLayout }}
+            >
                 <Show when={codeStore.currentTab} keyed>
                     {tab => (
-                        <div class="grow" ref={leftPane}>
-                            <Editor tab={tab} />
-                        </div>
-                    )}
-                </Show>
-                <Show when={codeStore.showResult && codeStore.currentTab.result} keyed>
-                    {_ => (
-                        <div class="grow" ref={rightPane}>
-                            <Result tab={codeStore.currentTab} />
-                        </div>
+                        <>
+                            <div class="grow" ref={leftPane}>
+                                <Editor tab={tab} />
+                            </div>
+                            <Show when={codeStore.showResult && tab.result} keyed>
+                                {_ => (
+                                    <div class="grow" ref={rightPane}>
+                                        <Switch>
+                                            <Match
+                                                keyed
+                                                when={codeStore.outputType === OutputType.Raw}
+                                            >
+                                                {_ => <Result tab={tab} />}
+                                            </Match>
+                                            <Match
+                                                keyed
+                                                when={
+                                                    codeStore.outputType === OutputType.Structured
+                                                }
+                                            >
+                                                {_ => <StructuredResult tab={tab} />}
+                                            </Match>
+                                        </Switch>
+                                    </div>
+                                )}
+                            </Show>
+                        </>
                     )}
                 </Show>
             </div>

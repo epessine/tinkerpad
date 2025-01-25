@@ -21,12 +21,23 @@ export enum Layout {
     Horizontal = 'horizontal',
 }
 
+export enum OutputType {
+    Raw = 'raw',
+    Structured = 'structured',
+}
+
 const [settingsStore] = useSettingsStore();
 
 const getDefaultData = () => {
     const tab = getNewTab();
 
-    return { tabs: [tab], currentTabId: tab.id, layout: Layout.Horizontal, showResult: false };
+    return {
+        tabs: [tab],
+        currentTabId: tab.id,
+        layout: Layout.Horizontal,
+        showResult: false,
+        outputType: OutputType.Raw,
+    };
 };
 
 const getNewTab = (): Tab => {
@@ -42,6 +53,7 @@ const getNewTab = (): Tab => {
 const rawData = await GetData(models.store.StoreName.Code);
 
 const newCodeStore: CodeStore = {
+    outputType: OutputType.Raw,
     ...(rawData ? JSON.parse(rawData) : getDefaultData()),
     createNewTab(atCurrentPosition: boolean = false) {
         const newTab = getNewTab();
@@ -109,6 +121,9 @@ const newCodeStore: CodeStore = {
     toggleResult() {
         setStore('showResult', !store.showResult);
     },
+    setOutputType(type: OutputType) {
+        setStore('outputType', type);
+    },
     async getTabFrameworkInfo(tabId: string): Promise<FrameworkInfo> {
         const tab = store.tabs.find(tab => tab.id === tabId)!;
 
@@ -171,6 +186,7 @@ export interface CodeStore {
     layout: Layout;
     isHorizontalLayout: boolean;
     showResult: boolean;
+    outputType: OutputType;
     createNewTab(atCurrentPosition?: boolean): void;
     setCurrentTab(tabId: string): void;
     closeTab(tabId: string): void;
@@ -183,6 +199,7 @@ export interface CodeStore {
     setTabContainerInfo(tabId: string, info?: models.docker.ContainerInfo): void;
     toggleLayout(): void;
     toggleResult(): void;
+    setOutputType(type: OutputType): void;
     getTabFrameworkInfo(tabId: string): Promise<FrameworkInfo>;
     runCode(tab: Tab): void;
 }

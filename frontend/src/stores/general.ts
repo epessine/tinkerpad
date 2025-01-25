@@ -52,6 +52,20 @@ const newGeneralStore: GeneralStore = {
                 background: themeData.colors['editor.background'],
                 primary: themeData.colors['editor.foreground'],
                 secondary: themeData.colors['editor.lineHighlightBackground'],
+                editor: {
+                    string:
+                        '#' +
+                        themeData.rules.find((rule: any) => rule.token.includes('string'))
+                            ?.foreground,
+                    keyword:
+                        '#' +
+                        themeData.rules.find((rule: any) => rule.token.includes('keyword'))
+                            ?.foreground,
+                    variable:
+                        '#' +
+                        themeData.rules.find((rule: any) => rule.token.includes('variable'))
+                            ?.foreground,
+                },
             },
         });
     },
@@ -85,6 +99,11 @@ export interface ThemeInfo {
         background: string;
         primary: string;
         secondary: string;
+        editor: {
+            string: string;
+            keyword: string;
+            variable: string;
+        };
     };
 }
 

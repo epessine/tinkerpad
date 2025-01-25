@@ -2,6 +2,7 @@
 
 namespace Tinkerpad\Php;
 
+use Psy\CodeCleaner\NoReturnValue;
 use Psy\Configuration;
 use Psy\VarDumper\Cloner;
 use Tinkerpad\Php\Booters;
@@ -10,6 +11,7 @@ use Psy\Exception\ThrowUpException;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\VarDumper;
+use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Tinkerpad\Php\Exceptions\DieException;
 use Tinkerpad\Php\Psy\ExecutionClosure;
 
@@ -77,9 +79,12 @@ class Runner
 
         $output = (new Cloner($this->getCasters()))->cloneVar($output);
 
+        $htmlDumper = new HtmlDumper;
+        $htmlDumper->setStyles(['default' => '']);
+
         $this->outputs[] = [
             'raw' => (new CliDumper())->dump($output, true),
-            //'html' => (new HtmlDumper())->dump($output, true),
+            'html' => base64_encode($htmlDumper->dump($output, true)),
         ];
 
         return $this;
@@ -123,7 +128,7 @@ class Runner
             
             $var = (new ExecutionClosure($this->shell))->execute();
 
-            if ($var) {
+            if ($var && !($var instanceof NoReturnValue)) {
                 $this->addOutput($var);
             }
         } catch (ThrowUpException $th) {
