@@ -17,18 +17,13 @@
  <img alt="screenshot" src="screenshots/showcase-1.png">
 </picture>
 
-<picture>
- <img alt="screenshot" src="screenshots/showcase-2.png">
-</picture>
-
-<picture>
- <img alt="screenshot" src="screenshots/showcase-3.png">
-</picture>
-
 ## Features
 
 * Ultra lightweight and fast, built on Go and Webview2 (powered by [Wails](https://github.com/wailsapp/wails)).
 * User-friendly and modern UI, multiple light and dark themes.
+* Enjoy fast and fluid code autocomplete (powered by [Phpactor](https://github.com/phpactor/phpactor))
+* View and explore structured output of your code (powered by [VarDumper](https://github.com/symfony/var-dumper))
+* Benchmark your code by inspecting the run time and peak memory usage.
 * Can run code via Docker containers, SSH connections and locally, all isolated by tabs.
 * Works with Laravel, Wordpress, Symphony, and more.
 * Save your favorite code snippets for later use!
