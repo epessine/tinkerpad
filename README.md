@@ -11,6 +11,8 @@
 [![GitHub forks](https://img.shields.io/github/forks/epessine/tinkerpad)](https://github.com/epessine/tinkerpad/fork)
 
 <strong>Tinkerpad is an open source, lightweight and blazing fast PHP playground that works with Docker and SSH.</strong>
+
+[**See Documentation**](https://github.com/epessine/tinkerpad/wiki)
 </div>
 
 <picture>
