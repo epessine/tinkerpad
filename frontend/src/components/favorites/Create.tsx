@@ -1,13 +1,13 @@
 import { Component, createSignal } from 'solid-js';
-import { favorites } from '../../wailsjs/go/models';
-import Input from './Input';
-import { useCodeStore } from '../stores/code';
-import FavoriteCode from './FavoriteCode';
-import { useGeneralStore } from '../stores/general';
-import Button from './Button';
+import { favorites } from '../../../wailsjs/go/models';
+import Input from '../Input';
+import { useCodeStore } from '../../stores/code';
+import Code from './Code';
+import { useGeneralStore } from '../../stores/general';
+import Button from '../Button';
 import { v4 } from 'uuid';
 
-const NewFavorite: Component<{
+const Create: Component<{
     saveFavorite: (favorite: favorites.Favorite) => Promise<void>;
 }> = props => {
     const [name, setName] = createSignal('');
@@ -45,7 +45,7 @@ const NewFavorite: Component<{
                 class="h-96 border"
                 style={{ 'border-color': generalStore.themeInfo.colors.secondary }}
             >
-                <FavoriteCode tab={codeStore.currentTab} />
+                <Code tab={codeStore.currentTab} />
             </div>
             <Button
                 on:click={() =>
@@ -67,4 +67,4 @@ const NewFavorite: Component<{
     );
 };
 
-export default NewFavorite;
+export default Create;

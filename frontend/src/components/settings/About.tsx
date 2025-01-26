@@ -1,6 +1,6 @@
 import { Component, createResource } from 'solid-js';
-import { GetAppVersion } from '../../wailsjs/go/settings/Settings';
-import logo from '../assets/appicon.png';
+import { GetAppVersion } from '../../../wailsjs/go/settings/Settings';
+import logo from '../../assets/appicon.png';
 
 const About: Component = () => {
     const [appVersion] = createResource(async () => await GetAppVersion());

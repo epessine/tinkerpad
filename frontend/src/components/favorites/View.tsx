@@ -1,13 +1,13 @@
 import { Component } from 'solid-js';
-import { favorites } from '../../wailsjs/go/models';
-import Input from './Input';
-import { useCodeStore } from '../stores/code';
-import FavoriteCode from './FavoriteCode';
-import { Screen, useGeneralStore } from '../stores/general';
-import Button from './Button';
-import { getSnippetModel } from '../utils/editor/model';
+import { favorites } from '../../../wailsjs/go/models';
+import Input from '../Input';
+import { useCodeStore } from '../../stores/code';
+import Code from './Code';
+import { Screen, useGeneralStore } from '../../stores/general';
+import Button from '../Button';
+import { getSnippetModel } from '../../utils/editor/model';
 
-const ViewFavorite: Component<{ favorite: favorites.Favorite }> = props => {
+const View: Component<{ favorite: favorites.Favorite }> = props => {
     const [codeStore] = useCodeStore();
     const [generalStore] = useGeneralStore();
 
@@ -31,7 +31,7 @@ const ViewFavorite: Component<{ favorite: favorites.Favorite }> = props => {
                 class="h-96 border"
                 style={{ 'border-color': generalStore.themeInfo.colors.secondary }}
             >
-                <FavoriteCode favorite={props.favorite} />
+                <Code favorite={props.favorite} />
             </div>
             <div class="flex gap-2">
                 <Button
@@ -63,4 +63,4 @@ const ViewFavorite: Component<{ favorite: favorites.Favorite }> = props => {
     );
 };
 
-export default ViewFavorite;
+export default View;

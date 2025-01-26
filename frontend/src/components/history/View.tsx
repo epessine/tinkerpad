@@ -1,12 +1,12 @@
 import { Component } from 'solid-js';
-import { history } from '../../wailsjs/go/models';
-import { useCodeStore } from '../stores/code';
-import { Screen, useGeneralStore } from '../stores/general';
-import Button from './Button';
-import { getSnippetModel } from '../utils/editor/model';
-import HistoryLogCode from './HistoryCode';
+import { history } from '../../../wailsjs/go/models';
+import { useCodeStore } from '../../stores/code';
+import { Screen, useGeneralStore } from '../../stores/general';
+import Button from '../Button';
+import { getSnippetModel } from '../../utils/editor/model';
+import Code from './Code';
 
-const ViewHistoryLog: Component<{ log: history.HistoryLog }> = props => {
+const View: Component<{ log: history.HistoryLog }> = props => {
     const [codeStore] = useCodeStore();
     const [generalStore] = useGeneralStore();
 
@@ -22,7 +22,7 @@ const ViewHistoryLog: Component<{ log: history.HistoryLog }> = props => {
                 class="h-96 border"
                 style={{ 'border-color': generalStore.themeInfo.colors.secondary }}
             >
-                <HistoryLogCode log={props.log} />
+                <Code log={props.log} />
             </div>
             <div class="flex gap-2">
                 <Button
@@ -51,4 +51,4 @@ const ViewHistoryLog: Component<{ log: history.HistoryLog }> = props => {
     );
 };
 
-export default ViewHistoryLog;
+export default View;

@@ -1,10 +1,10 @@
 import { Component, createSignal, Show } from 'solid-js';
-import { useSettingsStore } from '../stores/settings';
-import Input from './Input';
-import { settings } from '../../wailsjs/go/models';
-import Button from './Button';
+import { useSettingsStore } from '../../stores/settings';
+import Input from '../Input';
+import { settings } from '../../../wailsjs/go/models';
+import Button from '../Button';
 
-const EditorSettings: Component = () => {
+const Editor: Component = () => {
     const [settingsStore] = useSettingsStore();
     const [settings, setSettings] = createSignal(settingsStore.app.editor);
     const [errors, setErrors] = createSignal({} as Record<string, string>);
@@ -113,4 +113,4 @@ const EditorSettings: Component = () => {
     );
 };
 
-export default EditorSettings;
+export default Editor;

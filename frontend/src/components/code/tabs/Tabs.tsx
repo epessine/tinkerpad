@@ -2,8 +2,8 @@ import { Component } from 'solid-js';
 import { For } from 'solid-js';
 import Tab from './Tab';
 import NewTab from './NewTab';
-import { Tab as StoreTab } from '../stores/code';
-import { useGeneralStore } from '../stores/general';
+import { Tab as StoreTab } from '../../../stores/code';
+import { useGeneralStore } from '../../../stores/general';
 
 const Tabs: Component<{ tabs: StoreTab[]; currentTab: StoreTab }> = props => {
     const [generalStore] = useGeneralStore();

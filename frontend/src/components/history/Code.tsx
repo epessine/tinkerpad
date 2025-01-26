@@ -1,11 +1,11 @@
 import { Component, onCleanup, onMount } from 'solid-js';
 import * as monaco from 'monaco-editor';
-import { Tab } from '../stores/code';
-import { createEditor } from '../utils/editor/create';
-import { useGeneralStore } from '../stores/general';
-import { history } from '../../wailsjs/go/models';
+import { Tab } from '../../stores/code';
+import { createEditor } from '../../utils/editor/create';
+import { useGeneralStore } from '../../stores/general';
+import { history } from '../../../wailsjs/go/models';
 
-const HistoryLogCode: Component<{ log: history.HistoryLog }> = props => {
+const Code: Component<{ log: history.HistoryLog }> = props => {
     const [generalStore] = useGeneralStore();
     let editor: monaco.editor.IStandaloneCodeEditor;
     let container!: HTMLDivElement;
@@ -36,4 +36,4 @@ const HistoryLogCode: Component<{ log: history.HistoryLog }> = props => {
     );
 };
 
-export default HistoryLogCode;
+export default Code;

@@ -1,8 +1,8 @@
 import { Component, createEffect, onCleanup, onMount } from 'solid-js';
 import * as monaco from 'monaco-editor';
-import { Tab } from '../stores/code';
-import { createEditor } from '../utils/editor/create';
-import { useGeneralStore } from '../stores/general';
+import { Tab } from '../../stores/code';
+import { createEditor } from '../../utils/editor/create';
+import { useGeneralStore } from '../../stores/general';
 
 const Result: Component<{ tab: Tab }> = props => {
     const [generalStore] = useGeneralStore();

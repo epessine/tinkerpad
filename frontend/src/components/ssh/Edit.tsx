@@ -1,15 +1,15 @@
 import { Component, createEffect, createSignal, For, Match, Switch } from 'solid-js';
-import { ssh } from '../../wailsjs/go/models';
-import Input from './Input';
-import Button from './Button';
-import Select from './Select';
-import FolderOpen from './icons/FolderOpen';
-import { Error, Info, SelectFile } from '../../wailsjs/go/dialog/Dialog';
+import { ssh } from '../../../wailsjs/go/models';
+import Input from '../Input';
+import Button from '../Button';
+import Select from '../Select';
+import FolderOpen from '../icons/FolderOpen';
+import { Error, Info, SelectFile } from '../../../wailsjs/go/dialog/Dialog';
 import { createStore } from 'solid-js/store';
-import { CheckConnection } from '../../wailsjs/go/ssh/Ssh';
-import LoaderCircle from './icons/LoaderCircle';
+import { CheckConnection } from '../../../wailsjs/go/ssh/Ssh';
+import LoaderCircle from '../icons/LoaderCircle';
 
-const EditSshConfig: Component<{
+const Edit: Component<{
     saveConfig: (config: ssh.SshConnectionConfig, connect?: boolean) => Promise<void>;
     config?: ssh.SshConnectionConfig;
     groups?: ssh.SshConnectionConfigGroup[];
@@ -349,4 +349,4 @@ const EditSshConfig: Component<{
     );
 };
 
-export default EditSshConfig;
+export default Edit;

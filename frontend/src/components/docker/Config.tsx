@@ -1,16 +1,16 @@
 import { Component, createResource, createSignal, For, Show } from 'solid-js';
-import { Screen, useGeneralStore } from '../stores/general';
-import { useCodeStore } from '../stores/code';
-import StatusBar from './StatusBar';
-import { docker } from '../../wailsjs/go/models';
-import Docker from './icons/Docker';
-import { Connect, GetAll, Save } from '../../wailsjs/go/docker/Docker';
-import { RemoveConn } from '../../wailsjs/go/ssh/Ssh';
-import Refresh from './icons/Refresh';
-import { createTooltip } from '../utils/tooltip/create';
-import EditDockerContainerInfo from './EditDockerContainerInfo';
+import { Screen, useGeneralStore } from '../../stores/general';
+import { useCodeStore } from '../../stores/code';
+import StatusBar from '../code/status-bar/StatusBar';
+import { docker } from '../../../wailsjs/go/models';
+import Docker from '../icons/Docker';
+import { Connect, GetAll, Save } from '../../../wailsjs/go/docker/Docker';
+import { RemoveConn } from '../../../wailsjs/go/ssh/Ssh';
+import Refresh from '../icons/Refresh';
+import { createTooltip } from '../../utils/tooltip/create';
+import Edit from './Edit';
 
-const DockerConfig: Component = () => {
+const Config: Component = () => {
     const [selectedContainer, setSelectedContainer] = createSignal<
         docker.ContainerInfo | undefined
     >(undefined);
@@ -105,7 +105,7 @@ const DockerConfig: Component = () => {
                 </div>
                 <div class="grow px-7">
                     <Show keyed when={selectedContainer()}>
-                        {info => <EditDockerContainerInfo info={info} saveInfo={saveInfo} />}
+                        {info => <Edit info={info} saveInfo={saveInfo} />}
                     </Show>
                 </div>
             </div>
@@ -116,4 +116,4 @@ const DockerConfig: Component = () => {
     );
 };
 
-export default DockerConfig;
+export default Config;

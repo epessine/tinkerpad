@@ -1,14 +1,17 @@
 import { Component, createSignal, Show } from 'solid-js';
-import { docker } from '../../wailsjs/go/models';
-import Input from './Input';
-import Button from './Button';
-import { Error, Info } from '../../wailsjs/go/dialog/Dialog';
-import FolderSearch from './icons/FolderSearch';
-import { createTooltip } from '../utils/tooltip/create';
-import { GetContainerPhpBinaryPath, GetContainerWorkingDir } from '../../wailsjs/go/docker/Docker';
-import LoaderCircle from './icons/LoaderCircle';
+import { docker } from '../../../wailsjs/go/models';
+import Input from '../Input';
+import Button from '../Button';
+import { Error, Info } from '../../../wailsjs/go/dialog/Dialog';
+import FolderSearch from '../icons/FolderSearch';
+import { createTooltip } from '../../utils/tooltip/create';
+import {
+    GetContainerPhpBinaryPath,
+    GetContainerWorkingDir,
+} from '../../../wailsjs/go/docker/Docker';
+import LoaderCircle from '../icons/LoaderCircle';
 
-const EditDockerContainerInfo: Component<{
+const Edit: Component<{
     saveInfo: (info: docker.ContainerInfo, connect?: boolean) => Promise<void>;
     info: docker.ContainerInfo;
 }> = props => {
@@ -152,4 +155,4 @@ const EditDockerContainerInfo: Component<{
     );
 };
 
-export default EditDockerContainerInfo;
+export default Edit;

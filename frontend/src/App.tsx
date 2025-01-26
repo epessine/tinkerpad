@@ -1,15 +1,15 @@
 import { Match, onCleanup, onMount, Switch, type Component } from 'solid-js';
 import { initServices } from 'monaco-languageclient/vscode/services';
-import Code from './components/Code';
+import Code from './components/code/Code';
 import TitleBar from './components/TitleBar';
-import Settings from './components/Settings';
+import Settings from './components/settings/Settings';
 import { boot } from './utils/window-size/boot';
 import { registerHotkeys } from './utils/hotkey/register';
 import { Screen, useGeneralStore } from './stores/general';
-import Favorites from './components/Favorites';
-import History from './components/History';
-import SshConfig from './components/SshConfig';
-import DockerConfig from './components/DockerConfig';
+import Favorites from './components/favorites/Favorites';
+import History from './components/history/History';
+import SshConfig from './components/ssh/Config';
+import DockerConfig from './components/docker/Config';
 import { CheckUpdate } from '../wailsjs/go/updater/Updater';
 
 await initServices({

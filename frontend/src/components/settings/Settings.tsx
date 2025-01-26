@@ -1,8 +1,8 @@
 import { Component, For, Match, Switch } from 'solid-js';
-import GeneralSettings from './GeneralSettings';
-import EditorSettings from './EditorSettings';
-import { SettingsTab, useGeneralStore } from '../stores/general';
-import Cog from './icons/Cog';
+import General from './General';
+import Editor from './Editor';
+import { SettingsTab, useGeneralStore } from '../../stores/general';
+import Cog from '../icons/Cog';
 import About from './About';
 
 const Settings: Component = () => {
@@ -45,10 +45,10 @@ const Settings: Component = () => {
             <div class="grow px-7">
                 <Switch>
                     <Match when={generalStore.currentSettingsTab === SettingsTab.General}>
-                        <GeneralSettings />
+                        <General />
                     </Match>
                     <Match when={generalStore.currentSettingsTab === SettingsTab.Editor}>
-                        <EditorSettings />
+                        <Editor />
                     </Match>
                     <Match when={generalStore.currentSettingsTab === SettingsTab.About}>
                         <About />

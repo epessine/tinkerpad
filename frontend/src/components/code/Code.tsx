@@ -1,8 +1,8 @@
 import { Component, createEffect, Match, onCleanup, Show, Switch } from 'solid-js';
 import Editor from './Editor';
-import Tabs from './Tabs';
-import StatusBar from './StatusBar';
-import { OutputType, useCodeStore } from '../stores/code';
+import Tabs from './tabs/Tabs';
+import StatusBar from './status-bar/StatusBar';
+import { OutputType, useCodeStore } from '../../stores/code';
 import Result from './Result';
 import Split from 'split.js';
 import StructuredResult from './StructuredResult';

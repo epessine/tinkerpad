@@ -1,10 +1,10 @@
 import { Component, createEffect, onCleanup, onMount } from 'solid-js';
 import * as monaco from 'monaco-editor';
-import { createLanguageClient } from '../utils/editor/language-client';
+import { createLanguageClient } from '../../utils/editor/language-client';
 import { MonacoLanguageClient } from 'monaco-languageclient';
-import { createEditor } from '../utils/editor/create';
-import { Tab, useCodeStore } from '../stores/code';
-import { useGeneralStore } from '../stores/general';
+import { createEditor } from '../../utils/editor/create';
+import { Tab, useCodeStore } from '../../stores/code';
+import { useGeneralStore } from '../../stores/general';
 
 const Editor: Component<{ tab: Tab }> = props => {
     const [generalStore] = useGeneralStore();

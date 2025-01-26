@@ -1,9 +1,9 @@
 import { Component, Show } from 'solid-js';
-import { Tab as StoreTab, useCodeStore } from '../stores/code';
-import XMark from './icons/XMark';
-import { useGeneralStore } from '../stores/general';
-import Server from './icons/Server';
-import Docker from './icons/Docker';
+import { Tab as StoreTab, useCodeStore } from '../../../stores/code';
+import XMark from '../../icons/XMark';
+import { useGeneralStore } from '../../../stores/general';
+import Server from '../../icons/Server';
+import Docker from '../../icons/Docker';
 
 const Tab: Component<{ tab: StoreTab; isActive: boolean }> = props => {
     const [generalStore] = useGeneralStore();

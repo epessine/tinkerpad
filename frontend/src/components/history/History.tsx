@@ -1,10 +1,10 @@
 import { Component, createMemo, createResource, createSignal, Show } from 'solid-js';
-import { useGeneralStore } from '../stores/general';
-import HistoryIcon from './icons/History';
-import { GetAll } from '../../wailsjs/go/history/History';
-import ArrowLeft from './icons/ArrowLeft';
-import ArrowRight from './icons/ArrowRight';
-import ViewHistoryLog from './ViewHistoryLog';
+import { useGeneralStore } from '../../stores/general';
+import HistoryIcon from './../icons/History';
+import { GetAll } from '../../../wailsjs/go/history/History';
+import ArrowLeft from '../icons/ArrowLeft';
+import ArrowRight from '../icons/ArrowRight';
+import ViewHistoryLog from './View';
 
 const History: Component = () => {
     const [currentIndex, setCurrentIndex] = createSignal(0);

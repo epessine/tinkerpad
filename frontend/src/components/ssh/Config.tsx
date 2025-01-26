@@ -1,20 +1,20 @@
 import { Component, createResource, createSignal, For, Show } from 'solid-js';
-import { Screen, useGeneralStore } from '../stores/general';
-import Plus from './icons/Plus';
-import Trash from './icons/Trash';
-import { Confirm } from '../../wailsjs/go/dialog/Dialog';
-import Server from './icons/Server';
-import SaveIcon from './icons/Save';
-import { useCodeStore } from '../stores/code';
-import StatusBar from './StatusBar';
-import { Connect, GetAll, Save } from '../../wailsjs/go/ssh/Ssh';
-import { ssh } from '../../wailsjs/go/models';
-import EditSshConfig from './EditSshConfig';
-import Input from './Input';
-import Ban from './icons/Ban';
+import { Screen, useGeneralStore } from '../../stores/general';
+import Plus from '../icons/Plus';
+import Trash from '../icons/Trash';
+import { Confirm } from '../../../wailsjs/go/dialog/Dialog';
+import Server from '../icons/Server';
+import SaveIcon from '../icons/Save';
+import { useCodeStore } from '../../stores/code';
+import StatusBar from '../code/status-bar/StatusBar';
+import { Connect, GetAll, Save } from '../../../wailsjs/go/ssh/Ssh';
+import { ssh } from '../../../wailsjs/go/models';
+import Edit from './Edit';
+import Input from '../Input';
+import Ban from '../icons/Ban';
 import { v4 } from 'uuid';
 
-const SshConfig: Component = () => {
+const Config: Component = () => {
     let groupNameInput!: HTMLInputElement;
     let groupColorInput!: HTMLInputElement;
     const [selectedConfig, setSelectedConfig] = createSignal<ssh.SshConnectionConfig | undefined>(
@@ -261,7 +261,7 @@ const SshConfig: Component = () => {
                     </div>
                 </div>
                 <div class="grow px-7">
-                    <EditSshConfig
+                    <Edit
                         config={selectedConfig()}
                         saveConfig={saveConfig}
                         groups={data()?.groups}
@@ -275,4 +275,4 @@ const SshConfig: Component = () => {
     );
 };
 
-export default SshConfig;
+export default Config;

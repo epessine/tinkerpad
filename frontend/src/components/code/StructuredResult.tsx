@@ -1,7 +1,7 @@
 import { Component, createEffect, onMount } from 'solid-js';
-import { Layout, TabResult, useCodeStore } from '../stores/code';
-import { useGeneralStore } from '../stores/general';
-import { useSettingsStore } from '../stores/settings';
+import { Layout, TabResult, useCodeStore } from '../../stores/code';
+import { useGeneralStore } from '../../stores/general';
+import { useSettingsStore } from '../../stores/settings';
 
 const StructuredResult: Component<{ result: TabResult }> = props => {
     const [codeStore] = useCodeStore();

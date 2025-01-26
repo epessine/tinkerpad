@@ -1,8 +1,8 @@
 import { Component } from 'solid-js';
-import Plus from './icons/Plus';
-import { useCodeStore } from '../stores/code';
-import { createTooltip } from '../utils/tooltip/create';
-import { useGeneralStore } from '../stores/general';
+import Plus from '../../icons/Plus';
+import { useCodeStore } from '../../../stores/code';
+import { createTooltip } from '../../../utils/tooltip/create';
+import { useGeneralStore } from '../../../stores/general';
 
 const NewTab: Component = () => {
     const [generalStore] = useGeneralStore();

@@ -1,16 +1,19 @@
 import { Component, createSignal, For, Show } from 'solid-js';
-import { useSettingsStore } from '../stores/settings';
-import { settings } from '../../wailsjs/go/models';
-import Input from './Input';
-import Button from './Button';
-import FolderOpen from './icons/FolderOpen';
-import { SelectDir, SelectPhpBinary } from '../../wailsjs/go/dialog/Dialog';
-import { IsValidDockerBinaryPath, IsValidPhpBinaryPath } from '../../wailsjs/go/settings/Settings';
-import Select from './Select';
-import { Theme } from '../utils/editor/themes';
-import { useGeneralStore } from '../stores/general';
+import { useSettingsStore } from '../../stores/settings';
+import { settings } from '../../../wailsjs/go/models';
+import Input from '../Input';
+import Button from '../Button';
+import FolderOpen from '../icons/FolderOpen';
+import { SelectDir, SelectPhpBinary } from '../../../wailsjs/go/dialog/Dialog';
+import {
+    IsValidDockerBinaryPath,
+    IsValidPhpBinaryPath,
+} from '../../../wailsjs/go/settings/Settings';
+import Select from '../Select';
+import { Theme } from '../../utils/editor/themes';
+import { useGeneralStore } from '../../stores/general';
 
-const GeneralSettings: Component = () => {
+const General: Component = () => {
     const [generalStore] = useGeneralStore();
     const [settingsStore] = useSettingsStore();
     const [settings, setSettings] = createSignal(settingsStore.app);
@@ -180,4 +183,4 @@ const GeneralSettings: Component = () => {
     );
 };
 
-export default GeneralSettings;
+export default General;

@@ -1,13 +1,13 @@
 import { Component, createResource, createSignal, For, Show } from 'solid-js';
-import { useGeneralStore } from '../stores/general';
-import Star from './icons/Star';
-import Plus from './icons/Plus';
-import { GetAll, Save } from '../../wailsjs/go/favorites/Favorites';
-import { favorites } from '../../wailsjs/go/models';
-import NewFavorite from './NewFavorite';
-import ViewFavorite from './ViewFavorite';
-import Trash from './icons/Trash';
-import { Confirm } from '../../wailsjs/go/dialog/Dialog';
+import { useGeneralStore } from '../../stores/general';
+import Star from './../icons/Star';
+import Plus from './../icons/Plus';
+import { GetAll, Save } from '../../../wailsjs/go/favorites/Favorites';
+import { favorites } from '../../../wailsjs/go/models';
+import Create from './Create';
+import View from './View';
+import Trash from '../icons/Trash';
+import { Confirm } from '../../../wailsjs/go/dialog/Dialog';
 
 const Favorites: Component = () => {
     const [selectedFavorite, setSelectedFavorite] = createSignal<favorites.Favorite | undefined>(
@@ -120,9 +120,9 @@ const Favorites: Component = () => {
                 <Show
                     keyed
                     when={selectedFavorite()}
-                    fallback={<NewFavorite saveFavorite={saveFavorite} />}
+                    fallback={<Create saveFavorite={saveFavorite} />}
                 >
-                    {favorite => <ViewFavorite favorite={favorite} />}
+                    {favorite => <View favorite={favorite} />}
                 </Show>
             </div>
         </div>

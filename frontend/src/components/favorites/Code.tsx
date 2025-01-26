@@ -1,11 +1,11 @@
 import { Component, onCleanup, onMount } from 'solid-js';
 import * as monaco from 'monaco-editor';
-import { Tab } from '../stores/code';
-import { createEditor } from '../utils/editor/create';
-import { useGeneralStore } from '../stores/general';
-import { favorites } from '../../wailsjs/go/models';
+import { Tab } from '../../stores/code';
+import { createEditor } from '../../utils/editor/create';
+import { useGeneralStore } from '../../stores/general';
+import { favorites } from '../../../wailsjs/go/models';
 
-const FavoriteCode: Component<{
+const Code: Component<{
     tab?: Tab | undefined;
     favorite?: favorites.Favorite | undefined;
 }> = props => {
@@ -42,4 +42,4 @@ const FavoriteCode: Component<{
     );
 };
 
-export default FavoriteCode;
+export default Code;
