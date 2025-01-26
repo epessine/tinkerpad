@@ -97,7 +97,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                             classList={{
                                 'brightness-125': generalStore.currentScreen === Screen.Ssh,
                             }}
-                            class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
+                            class="py-2 px-4 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
                             style={{ 'background-color': generalStore.themeInfo.colors.background }}
                         >
                             <Server class="w-4 -mt-0.5 inline" />
@@ -111,13 +111,13 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                             codeStore.setTabSshConnection(props.tab.id);
                             refetch();
                         }}
-                        class="py-2 group px-5 w-min flex gap-2 items-center text-center whitespace-nowrap hover:brightness-110 select-none"
+                        class="py-2 group px-4 w-min max-w-40 flex gap-2 items-center text-center whitespace-nowrap hover:brightness-110 select-none"
                         style={{ 'background-color': generalStore.themeInfo.colors.background }}
                     >
-                        <Server class="w-4 -mt-0.5 inline group-hover:hidden" />
-                        <ServerOff class="w-4 -mt-0.5 hidden group-hover:inline" />
-                        <span>
-                            Connected to <b>{props.tab.sshConn?.name}</b>
+                        <Server class="w-4 min-w-4 -mt-0.5 inline group-hover:hidden" />
+                        <ServerOff class="w-4 min-w-4 -mt-0.5 hidden group-hover:inline" />
+                        <span class="truncate">
+                            <b>{props.tab.sshConn?.name}</b>
                         </span>
                     </div>
                 </Show>
@@ -136,7 +136,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                             classList={{
                                 'brightness-125': generalStore.currentScreen === Screen.Docker,
                             }}
-                            class="py-2 px-5 w-min flex items-center text-center whitespace-nowrap hover:brightness-110 select-none"
+                            class="py-2 px-4 w-min flex items-center text-center whitespace-nowrap hover:brightness-110 select-none"
                             style={{ 'background-color': generalStore.themeInfo.colors.background }}
                         >
                             <Docker class="w-5 inline -mt-0.5" />
@@ -152,16 +152,16 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                         classList={{
                             'brightness-125': generalStore.currentScreen === Screen.Docker,
                         }}
-                        class="py-2 px-5 w-min text-center flex items-center gap-2 group relative whitespace-nowrap hover:brightness-110 select-none"
+                        class="py-2 px-4 w-min max-w-40 text-center flex items-center gap-2 group relative whitespace-nowrap hover:brightness-110 select-none"
                         style={{ 'background-color': generalStore.themeInfo.colors.background }}
                     >
-                        <Docker class="w-5 inline -mt-0.5" />
+                        <Docker class="w-5 min-w-5 inline -mt-0.5" />
                         <div
-                            class="absolute h-[1.3px] w-[25px] left-4 -rotate-45 top-[18px] hidden drop-shadow group-hover:block"
+                            class="absolute h-[1.3px] w-[25px] left-3 -rotate-45 top-[18px] hidden drop-shadow group-hover:block"
                             style={{ 'background-color': generalStore.themeInfo.colors.primary }}
                         ></div>
-                        <span>
-                            Connected to <b>{props.tab.containerInfo?.name}</b>
+                        <span class="truncate">
+                            <b>{props.tab.containerInfo?.name}</b>
                         </span>
                     </div>
                 </Show>
@@ -169,14 +169,14 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                 <div
                     id="set-workdir-button"
                     on:click={setWorkingDir}
-                    class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
+                    class="py-2 px-4 w-min max-w-36 truncate text-center whitespace-nowrap hover:brightness-110 select-none"
                     style={{ 'background-color': generalStore.themeInfo.colors.background }}
                 >
-                    <FolderCode class="w-4 inline -mt-0.5 mr-1" />{' '}
+                    <FolderCode class="w-4 min-w-4 inline -mt-0.5 mr-1" />{' '}
                     {props.tab.workingDir.split('/').pop()}
                 </div>
                 <div
-                    class="py-2 px-5 w-min text-center whitespace-nowrap select-none"
+                    class="py-2 px-4 w-min text-center whitespace-nowrap select-none"
                     style={{ 'background-color': generalStore.themeInfo.colors.background }}
                 >
                     <Show
@@ -188,11 +188,13 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                     </Show>
                 </div>
                 <div
-                    class="py-2 px-5 w-min text-center whitespace-nowrap select-none"
+                    class="py-2 px-4 w-min text-center whitespace-nowrap select-none"
                     style={{ 'background-color': generalStore.themeInfo.colors.background }}
                 >
                     <Show when={!frameworkInfo.loading}>
-                        <span class="align-middle">PHP {frameworkInfo()!.php_version}</span>
+                        <span class="align-middle inline-flex mt-0.5">
+                            PHP {frameworkInfo()!.php_version}
+                        </span>
                     </Show>
                 </div>
             </div>
@@ -206,18 +208,18 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                                     <>
                                         <div
                                             id="run-time"
-                                            class="py-2 px-5 w-min text-center whitespace-nowrap select-none"
+                                            class="py-2 px-3 w-min text-center whitespace-nowrap select-none"
                                             style={{
                                                 'background-color':
                                                     generalStore.themeInfo.colors.background,
                                             }}
                                         >
-                                            <Timer class="w-4 inline -mt-0.5 mr-1.5" />
-                                            {(res.time * 1000).toFixed(3)} ms
+                                            <Timer class="w-4 inline-flex -mt-0.5 mr-1.5" />
+                                            <span>{(res.time * 1000).toFixed(3)} ms</span>
                                         </div>
                                         <div
                                             id="memory-usage"
-                                            class="py-2 px-5 w-min text-center whitespace-nowrap select-none"
+                                            class="py-2 px-3 w-min text-center whitespace-nowrap select-none"
                                             style={{
                                                 'background-color':
                                                     generalStore.themeInfo.colors.background,
@@ -239,7 +241,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                                         : OutputType.Raw,
                                 )
                             }
-                            class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
+                            class="py-2 px-4 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
                             style={{ 'background-color': generalStore.themeInfo.colors.background }}
                         >
                             <Switch>
@@ -256,7 +258,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                 <div
                     id="toggle-result-button"
                     on:click={codeStore.toggleResult}
-                    class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
+                    class="py-2 px-4 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
                     style={{ 'background-color': generalStore.themeInfo.colors.background }}
                 >
                     <Show
@@ -269,7 +271,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                 <div
                     id="toggle-layout-button"
                     on:click={codeStore.toggleLayout}
-                    class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
+                    class="py-2 px-4 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
                     style={{ 'background-color': generalStore.themeInfo.colors.background }}
                 >
                     <Show
@@ -282,7 +284,7 @@ const StatusBar: Component<{ tab: Tab }> = props => {
                 <div
                     id="run-code-button"
                     on:click={() => props.tab.loading || codeStore.runCode(props.tab)}
-                    class="py-2 px-5 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
+                    class="py-2 px-4 w-min text-center whitespace-nowrap hover:brightness-110 select-none"
                     style={{ 'background-color': generalStore.themeInfo.colors.background }}
                 >
                     <Show
