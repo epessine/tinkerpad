@@ -14,7 +14,7 @@ import {
 } from '../../wailsjs/go/php/Php';
 import { AddLog } from '../../wailsjs/go/history/History';
 import { ConnExists, RemoveConn } from '../../wailsjs/go/ssh/Ssh';
-import { FrameworkInfo } from '../components/code/status-bar/StatusBar';
+import { FrameworkInfo } from '../components/code/status-bar/FrameworkInfoLabel';
 
 export enum Layout {
     Vertical = 'vertical',
