@@ -77,7 +77,7 @@ func (settings *Settings) defaults() *App {
 		Editor: Editor{
 			FontSize:   14,
 			LineHeight: 1.5,
-			FontFamily: "Zed Mono Extended",
+			FontFamily: "Menlo, monospace",
 			WordWrap:   true,
 		},
 	}
