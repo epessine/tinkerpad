@@ -45,6 +45,8 @@ func (settings *Settings) Boot(log *logger.Logger, storage *storage.Storage) {
 	app, err := settings.storage.Load(filename)
 	if err != nil {
 		settings.App = settings.defaults()
+
+		return
 	}
 	if err = json.Unmarshal(app, &settings.App); err != nil {
 		log.Errorf("failed to unmarshal config: %v", err)

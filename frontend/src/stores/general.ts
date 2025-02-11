@@ -3,7 +3,7 @@ import { store } from '../../wailsjs/go/models';
 import { GetData, Save } from '../../wailsjs/go/store/Store';
 import { createStore, SetStoreFunction } from 'solid-js/store';
 import { Theme } from '../utils/editor/themes';
-import defaultThemeData from '../assets/themes/Nord.json';
+import getThemeInfo from '../utils/theme/get-theme-info';
 
 export enum SettingsTab {
     General = 'General',
@@ -23,14 +23,7 @@ export enum Screen {
 const rawData = await GetData(store.StoreName.General);
 
 const newGeneralStore: GeneralStore = {
-    themeInfo: {
-        name: Theme.Nord,
-        colors: {
-            background: defaultThemeData.colors['editor.background'],
-            primary: defaultThemeData.colors['editor.foreground'],
-            secondary: defaultThemeData.colors['editor.lineHighlightBackground'],
-        },
-    },
+    themeInfo: await getThemeInfo(Theme.Nord),
     ...(rawData && JSON.parse(rawData)),
     currentScreen: Screen.Code,
     currentSettingsTab: SettingsTab.General,
@@ -44,30 +37,7 @@ const newGeneralStore: GeneralStore = {
         setGeneralStore('window', stats);
     },
     async setTheme(theme: Theme) {
-        const themeData = await import(`../assets/themes/${theme}.json`);
-
-        setGeneralStore('themeInfo', {
-            name: theme,
-            colors: {
-                background: themeData.colors['editor.background'],
-                primary: themeData.colors['editor.foreground'],
-                secondary: themeData.colors['editor.lineHighlightBackground'],
-                editor: {
-                    string:
-                        '#' +
-                        themeData.rules.find((rule: any) => rule.token.includes('string'))
-                            ?.foreground,
-                    keyword:
-                        '#' +
-                        themeData.rules.find((rule: any) => rule.token.includes('keyword'))
-                            ?.foreground,
-                    variable:
-                        '#' +
-                        themeData.rules.find((rule: any) => rule.token.includes('variable'))
-                            ?.foreground,
-                },
-            },
-        });
+        setGeneralStore('themeInfo', await getThemeInfo(theme));
     },
 };
 
