@@ -13,7 +13,7 @@ const StructuredResult: Component<{ result: TabResult }> = props => {
             font-size: ${settingsStore.app.editor.fontSize}px !important;
         }
         pre.sf-dump, pre.sf-dump .sf-dump-default {
-            color: ${generalStore.themeInfo.colors.editor.keyword};
+            color: ${generalStore.themeInfo.colors.editor?.keyword};
             padding: 1rem;
             background-color: color-mix(in srgb, ${generalStore.themeInfo.colors.secondary}, ${generalStore.themeInfo.colors.background} 60%);
         }
@@ -21,10 +21,10 @@ const StructuredResult: Component<{ result: TabResult }> = props => {
             background-color: ${generalStore.themeInfo.colors.secondary};
         }
         pre.sf-dump .sf-dump-key {
-            color: ${generalStore.themeInfo.colors.editor.string};
+            color: ${generalStore.themeInfo.colors.editor?.string};
         }
         pre.sf-dump .sf-dump-str {
-            color: ${generalStore.themeInfo.colors.editor.string};
+            color: ${generalStore.themeInfo.colors.editor?.string};
         }
         pre.sf-dump .sf-dump-num {
             color: ${generalStore.themeInfo.colors.primary};
@@ -39,13 +39,13 @@ const StructuredResult: Component<{ result: TabResult }> = props => {
             color: ${generalStore.themeInfo.colors.primary};
         }
         pre.sf-dump .sf-dump-const {
-            color: ${generalStore.themeInfo.colors.editor.keyword};
+            color: ${generalStore.themeInfo.colors.editor?.keyword};
         }
         pre.sf-dump .sf-dump-protected,
         pre.sf-dump .sf-dump-public,
         pre.sf-dump .sf-dump-private,
         pre.sf-dump .sf-dump-meta {
-            color: ${generalStore.themeInfo.colors.editor.variable};
+            color: ${generalStore.themeInfo.colors.editor?.variable};
         }
     `;
     var resultPane!: HTMLDivElement;
