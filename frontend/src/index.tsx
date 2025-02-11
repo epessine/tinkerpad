@@ -5,6 +5,14 @@ import './index.css';
 import App from './App';
 import { initServices } from 'monaco-languageclient/vscode/services';
 import 'tippy.js/dist/tippy.css';
+import './assets/sf-dump.js';
+import './assets/sf-dump.css';
+
+declare global {
+    interface Window {
+        Sfdump: (doc: string) => void;
+    }
+}
 
 useWorkerFactory({
     ignoreMapping: true,

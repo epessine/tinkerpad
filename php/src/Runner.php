@@ -84,7 +84,7 @@ class Runner
         $output = (new Cloner($this->getCasters()))->cloneVar($output);
 
         $htmlDumper = new HtmlDumper;
-        $htmlDumper->setStyles(['default' => '']);
+        $htmlDumper->setDumpHeader('');
 
         $this->outputs[] = [
             'raw' => (new CliDumper())->dump($output, true),

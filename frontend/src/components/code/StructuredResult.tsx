@@ -59,21 +59,13 @@ const StructuredResult: Component<{ result: TabResult }> = props => {
 
             resultPane.innerHTML = outputs.map((v: any) => atob(v.html)).join('');
 
-            Array.from(resultPane.querySelectorAll('script')).forEach(oldScriptEl => {
-                const newScriptEl = document.createElement('script');
-
-                Array.from(oldScriptEl.attributes).forEach(attr => {
-                    newScriptEl.setAttribute(attr.name, attr.value);
-                });
-
-                newScriptEl.appendChild(document.createTextNode(oldScriptEl.innerHTML));
-
-                oldScriptEl.parentNode!.replaceChild(newScriptEl, oldScriptEl);
-            });
-
             const styleEl = document.createElement('style');
             styleEl.innerHTML = style;
             resultPane.appendChild(styleEl);
+
+            Array.from(resultPane.querySelectorAll('.sf-dump')).forEach(dump =>
+                window.Sfdump(dump.id),
+            );
         } catch (error) {
             console.error(error);
         }
