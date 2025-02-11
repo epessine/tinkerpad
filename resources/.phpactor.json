@@ -57,9 +57,7 @@
     "worse_reflection.cache_dir": "%cache%/worse-reflection",
     "worse_reflection.stub_dir": "%application_root%/vendor/jetbrains/phpstorm-stubs",
     "worse_reflection.diagnostics.undefined_variable.suggestion_levenshtein_disatance": 4,
-    "file_path_resolver.project_root": "/Applications/Tinkerwell.app/Contents/Resources/phpactor/bin",
     "file_path_resolver.app_name": "phpactor",
-    "file_path_resolver.application_root": "/Applications/Tinkerwell.app/Contents/Resources/phpactor",
     "file_path_resolver.enable_cache": true,
     "file_path_resolver.enable_logging": true,
     "logging.enabled": false,
@@ -103,7 +101,6 @@
     "language_server.profile": false,
     "language_server.trace": false,
     "language_server.shutdown_grace_period": 200,
-    "language_server.phpactor_bin": "/Applications/Tinkerwell.app/Contents/Resources/phpactor/bin/phpactor",
     "language_server.self_destruct_timeout": 2500,
     "language_server.diagnostic_outsource_timeout": 5,
     "language_server_completion.trim_leading_dollar": false,
@@ -123,9 +120,6 @@
         "/vendor/**/Tests/**/*",
         "/vendor/**/tests/**/*",
         "/vendor/composer/**/*"
-    ],
-    "indexer.stub_paths": [
-        "/Applications/Tinkerwell.app/Contents/Resources/phpactor/vendor/jetbrains/phpstorm-stubs"
     ],
     "indexer.poll_time": 5000,
     "indexer.buffer_time": 500,
