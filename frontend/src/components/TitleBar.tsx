@@ -1,6 +1,7 @@
 import { Component, createSignal, Show } from 'solid-js';
 import Cog from './icons/Cog';
 import {
+    BrowserOpenURL,
     Quit,
     WindowIsMaximised,
     WindowMaximise,
@@ -43,6 +44,13 @@ const TitleBar: Component = () => {
                 <Show when={updateStore.hasUpdate}>
                     <div
                         on:click={async () => {
+                            if (generalStore.isLinux) {
+                                BrowserOpenURL(
+                                    'https://github.com/epessine/tinkerpad/releases/latest',
+                                );
+                                return;
+                            }
+
                             setIsDownloading(true);
                             try {
                                 await DownloadUpdate(updateStore.info!.url);
