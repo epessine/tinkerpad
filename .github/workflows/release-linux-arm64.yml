@@ -156,6 +156,6 @@ jobs:
               with:
                   tag_name: v${{ steps.normalise_version.outputs.version }}
                   files: |
-                      ./build/linux/tinkerpad_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.deb
+                      ./build/tinkerpad_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.deb
                       tinkerpad_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.AppImage
                   token: ${{ secrets.GITHUB_TOKEN }}
