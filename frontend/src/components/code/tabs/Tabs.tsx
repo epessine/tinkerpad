@@ -15,7 +15,10 @@ const Tabs: Component<{ tabs: StoreTab[]; currentTab: StoreTab }> = props => {
         <div
             class="border-b"
             style={{ 'border-color': generalStore.themeInfo.colors.secondary }}
-            classList={{ 'flex justify-between items-center': !generalStore.shouldShowTitleBar() }}
+            classList={{
+                'flex justify-between items-center': !generalStore.shouldShowTitleBar(),
+                'border-t': !generalStore.isLinux,
+            }}
         >
             <nav
                 class="flex text-sm"
