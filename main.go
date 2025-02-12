@@ -108,6 +108,7 @@ func main() {
 			for _, conn := range sh.Conns {
 				conn.Client.Close()
 			}
+			ls.Close()
 			return false
 		},
 		WindowStartState: options.Normal,
