@@ -13,12 +13,11 @@ on:
 jobs:
     release:
         name: Release Linux App
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
         strategy:
             matrix:
                 platform:
                     - linux/amd64
-                    - linux/arm64
 
         steps:
             - name: Checkout source code
@@ -30,15 +29,6 @@ jobs:
               run: |
                   tag=$(echo ${{ matrix.platform }} | sed -e 's/\//_/g')
                   echo "tag=$tag" >> "$GITHUB_OUTPUT"
-
-            - name: Normalise platform arch
-              id: normalise_platform_arch
-              run: |
-                  if [ "${{ matrix.platform }}" == "linux/amd64" ]; then
-                    echo "arch=x86_64" >> "$GITHUB_OUTPUT"
-                  elif [ "${{ matrix.platform }}" == "linux/arm64" ]; then
-                    echo "arch=aarch64" >> "$GITHUB_OUTPUT"
-                  fi
 
             - name: Normalise version tag
               id: normalise_version
@@ -85,10 +75,6 @@ jobs:
             - name: Build wails app for Linux
               shell: bash
               run: |
-                  if [ "${{ matrix.platform }}" = "linux/arm64" ]; then
-                      export CC_FOR_TARGET=gcc-aarch64-linux-gnu
-                      export CC=aarch64-linux-gnu-gcc
-                  fi
                   CGO_ENABLED=1 wails build -platform ${{ matrix.platform }} \
                   -ldflags "-X main.version=${{ github.event.release.tag_name }} -X tinkerpad/backend/encrypt.secret=${{ secrets.TINKERPAD_SECRET }}" \
                   -o tinkerpad
@@ -125,7 +111,7 @@ jobs:
 
             - name: Package up appimage file
               run: |
-                  curl https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20240109-1/linuxdeploy-${{ steps.normalise_platform_arch.outputs.arch }}.AppImage \
+                  curl https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20240109-1/linuxdeploy-x86_64.AppImage \
                         -o linuxdeploy \
                         -L
                   chmod u+x linuxdeploy
@@ -154,7 +140,7 @@ jobs:
                   sed -i '/XDG_DATA_DIRS/a export WEBKIT_DISABLE_COMPOSITING_MODE=1' linuxdeploy-plugin-gtk.sh
                   chmod +x linuxdeploy-plugin-gtk.sh
 
-                  curl -o AppDir/AppRun https://github.com/AppImage/AppImageKit/releases/download/continuous/AppRun-${{ steps.normalise_platform_arch.outputs.arch }} -L
+                  curl -o AppDir/AppRun https://github.com/AppImage/AppImageKit/releases/download/continuous/AppRun-x86_64 -L
 
                   ./linuxdeploy --appdir AppDir \
                      --output=appimage \
@@ -163,7 +149,7 @@ jobs:
                      -d $build_dir/usr/share/applications/tinkerpad.desktop
 
             - name: Rename appimage
-              run: mv Tinkerpad-${{ steps.normalise_platform_arch.outputs.arch }}.AppImage "tinkerpad_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.AppImage"
+              run: mv Tinkerpad-x86_64.AppImage "tinkerpad_${{ steps.normalise_version.outputs.version }}_${{ steps.normalise_platform.outputs.tag }}.AppImage"
 
             - name: Upload release asset
               uses: softprops/action-gh-release@v1
