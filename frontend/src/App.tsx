@@ -1,4 +1,4 @@
-import { Match, onCleanup, onMount, Switch, type Component } from 'solid-js';
+import { Match, onCleanup, onMount, Show, Switch, type Component } from 'solid-js';
 import { initServices } from 'monaco-languageclient/vscode/services';
 import Code from './components/code/Code';
 import TitleBar from './components/TitleBar';
@@ -35,7 +35,9 @@ const App: Component = () => {
             class="flex flex-col h-screen max-h-screen overflow-y-hidden snap-none"
             style={{ 'background-color': generalStore.themeInfo.colors.background }}
         >
-            <TitleBar />
+            <Show when={generalStore.shouldShowTitleBar()}>
+                <TitleBar />
+            </Show>
             <Switch>
                 <Match when={generalStore.currentScreen === Screen.Code}>
                     <Code />

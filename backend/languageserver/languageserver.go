@@ -1,7 +1,6 @@
 package languageserver
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -17,6 +16,7 @@ type LanguageServer struct {
 	log      *logger.Logger
 	storage  *storage.Storage
 	settings *settings.Settings
+	srv      *http.Server
 }
 
 type ServerProcess struct {
@@ -39,7 +39,7 @@ func (ls *LanguageServer) Boot(log *logger.Logger, storage *storage.Storage, set
 func (ls *LanguageServer) Start() {
 	port := ls.settings.App.AutoCompletePort
 
-	srv := &http.Server{Addr: fmt.Sprintf(":%d", port)}
+	ls.srv = &http.Server{Addr: fmt.Sprintf(":%d", port)}
 
 	http.HandleFunc("/ls", func(w http.ResponseWriter, r *http.Request) {
 		upgrader := websocket.Upgrader{
@@ -59,23 +59,29 @@ func (ls *LanguageServer) Start() {
 		proxy.Run()
 	})
 
-	go ls.serve(srv, port)
+	go ls.serve()
 
 	for {
 		if ls.settings.App.AutoCompletePort != port {
 			port = ls.settings.App.AutoCompletePort
-			srv.Shutdown(context.Background())
+			ls.srv.Close()
 
-			srv = &http.Server{Addr: fmt.Sprintf(":%d", port)}
-			go ls.serve(srv, port)
+			ls.srv = &http.Server{Addr: fmt.Sprintf(":%d", port)}
+			go ls.serve()
 		}
 	}
 }
 
-func (ls *LanguageServer) serve(srv *http.Server, port int) {
-	ls.log.Debugf("Starting proxy on :%d", port)
+func (ls *LanguageServer) Close() {
+	if ls.srv != nil {
+		ls.srv.Close()
+	}
+}
 
-	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
+func (ls *LanguageServer) serve() {
+	ls.log.Debugf("Starting proxy on :%s", ls.srv.Addr)
+
+	if err := ls.srv.ListenAndServe(); err != http.ErrServerClosed {
 		ls.log.Fatalf("ListenAndServe error: %v", err)
 	}
 }

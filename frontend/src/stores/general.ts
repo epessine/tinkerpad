@@ -4,6 +4,7 @@ import { GetData, Save } from '../../wailsjs/go/store/Store';
 import { createStore, SetStoreFunction } from 'solid-js/store';
 import { Theme } from '../utils/editor/themes';
 import getThemeInfo from '../utils/theme/get-theme-info';
+import { IsLinux } from '../../wailsjs/go/settings/Settings';
 
 export enum SettingsTab {
     General = 'General',
@@ -25,6 +26,7 @@ const rawData = await GetData(store.StoreName.General);
 const newGeneralStore: GeneralStore = {
     themeInfo: await getThemeInfo(Theme.Nord),
     ...(rawData && JSON.parse(rawData)),
+    isLinux: await IsLinux(),
     currentScreen: Screen.Code,
     currentSettingsTab: SettingsTab.General,
     setCurrentSettingsTab(tab: SettingsTab) {
@@ -39,6 +41,12 @@ const newGeneralStore: GeneralStore = {
     async setTheme(theme: Theme) {
         setGeneralStore('themeInfo', await getThemeInfo(theme));
     },
+    shouldShowTitleBar(): boolean {
+        return (
+            [Screen.Settings, Screen.Favorites, Screen.History].includes(this.currentScreen) ||
+            !this.isLinux
+        );
+    },
 };
 
 const [generalStore, setGeneralStore] = createStore(newGeneralStore);
@@ -46,6 +54,7 @@ const [generalStore, setGeneralStore] = createStore(newGeneralStore);
 createEffect(() => Save(store.StoreName.General, JSON.stringify({ ...generalStore })));
 
 export interface GeneralStore {
+    isLinux: boolean;
     currentScreen: Screen;
     currentSettingsTab: SettingsTab;
     window?: WindowStats;
@@ -54,6 +63,7 @@ export interface GeneralStore {
     setCurrentScreen: (screen: Screen) => void;
     setWindowStats: (stats: WindowStats) => void;
     setTheme: (theme: Theme) => Promise<void>;
+    shouldShowTitleBar: () => boolean;
 }
 
 export interface WindowStats {

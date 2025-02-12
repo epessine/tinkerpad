@@ -96,17 +96,18 @@ const Config: Component = () => {
     };
 
     return (
-        <div class="flex flex-col grow max-h-full">
+        <div class="flex flex-col grow">
             <div
                 class="flex grow px-20 py-6 text-sm border-t cursor-default select-none max-h-full"
                 style={{
                     'background-color': generalStore.themeInfo.colors.background,
                     color: generalStore.themeInfo.colors.primary,
                     'border-color': generalStore.themeInfo.colors.secondary,
+                    'max-height': `calc(100vh - ${generalStore.isLinux ? 2.5 : 4.8}rem)`,
                 }}
             >
                 <div
-                    class="flex flex-col gap-2 border-r px-7 min-w-[30%] max-w-[30%]"
+                    class="flex flex-col gap-2 border-r px-7 max-h-full min-w-[30%] max-w-[30%]"
                     style={{ 'border-color': generalStore.themeInfo.colors.secondary }}
                 >
                     <h1 class="text-lg mb-5 font-semibold drop-shadow">
@@ -260,7 +261,7 @@ const Config: Component = () => {
                         </For>
                     </div>
                 </div>
-                <div class="grow px-7">
+                <div class="grow px-7 overflow-y-auto soft-scrollbar">
                     <Edit
                         config={selectedConfig()}
                         saveConfig={saveConfig}

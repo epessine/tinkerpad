@@ -6,9 +6,11 @@ import { OutputType, useCodeStore } from '../../stores/code';
 import Result from './Result';
 import Split from 'split.js';
 import StructuredResult from './StructuredResult';
+import { useGeneralStore } from '../../stores/general';
 
 const Code: Component = () => {
     const [codeStore] = useCodeStore();
+    const [generalStore] = useGeneralStore();
     var leftPane!: HTMLDivElement;
     var rightPane!: HTMLDivElement;
     var split: Split.Instance;
@@ -34,7 +36,9 @@ const Code: Component = () => {
             <Tabs tabs={codeStore.tabs} currentTab={codeStore.currentTab} />
             <div
                 class="flex grow"
-                style="max-height: calc(100vh - 7.5rem)"
+                style={{
+                    'max-height': `calc(100vh - ${generalStore.shouldShowTitleBar() ? 7.5 : 5.3}rem)`,
+                }}
                 classList={{ 'flex-col': !codeStore.isHorizontalLayout }}
             >
                 <Show when={codeStore.currentTab} keyed>

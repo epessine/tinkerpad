@@ -104,11 +104,11 @@ func main() {
 				}
 			}()
 		},
-		OnBeforeClose: func(ctx context.Context) (prevent bool) {
+		OnShutdown: func(ctx context.Context) {
 			for _, conn := range sh.Conns {
 				conn.Client.Close()
 			}
-			return false
+			ls.Close()
 		},
 		WindowStartState: options.Normal,
 		Bind: []interface{}{
