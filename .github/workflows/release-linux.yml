@@ -65,7 +65,7 @@ jobs:
               shell: bash
               run: |
                   sudo apt-get update
-                  sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libfuse-dev libfuse2
+                  sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libfuse-dev libfuse2 gcc-aarch64-linux-gnu
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v2
@@ -85,6 +85,10 @@ jobs:
             - name: Build wails app for Linux
               shell: bash
               run: |
+                  if [ "${{ matrix.platform }}" = "linux/arm64" ]; then
+                      export CC_FOR_TARGET=gcc-aarch64-linux-gnu
+                      export CC=aarch64-linux-gnu-gcc
+                  fi
                   CGO_ENABLED=1 wails build -platform ${{ matrix.platform }} \
                   -ldflags "-X main.version=${{ github.event.release.tag_name }} -X tinkerpad/backend/encrypt.secret=${{ secrets.TINKERPAD_SECRET }}" \
                   -o tinkerpad
