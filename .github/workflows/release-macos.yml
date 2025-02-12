@@ -49,7 +49,7 @@ jobs:
 
             - name: Install wails
               shell: bash
-              run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.9.2
+              run: go install github.com/wailsapp/wails/v2/cmd/wails@v2.9.3
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v2
