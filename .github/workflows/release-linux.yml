@@ -98,7 +98,7 @@ jobs:
               run: |
                   content=$(cat build/linux/DEBIAN/control)
                   content=$(echo "$content" | sed -e "s/{{.Name}}/$(jq -r '.name' wails.json)/g")
-                  content=$(echo "$content" | sed -e "s/{{.Info.ProductVersion}}/${{ github.event.release.tag_name }}/g")
+                  content=$(echo "$content" | sed -e "s/{{.Info.ProductVersion}}/${{ steps.normalise_version.outputs.version }}/g")
                   content=$(echo "$content" | sed -e "s/{{.Info.Arch}}/${{ steps.normalise_platform.outputs.tag }}/g")
                   content=$(echo "$content" | sed -e "s/{{.Author.Name}}/$(jq -r '.author.name' wails.json)/g")
                   content=$(echo "$content" | sed -e "s/{{.Author.Email}}/$(jq -r '.author.email' wails.json)/g")
