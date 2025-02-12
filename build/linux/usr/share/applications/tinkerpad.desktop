@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name={{.Info.ProductName}}
+Exec=/usr/local/bin/tinkerpad %U
+Terminal=false
+Type=Application
+Icon=tinkerpad
+StartupWMClass=tinkerpad
+Comment={{.Info.Comments}}
+MimeType=x-scheme-handler/tinkerpad;
+Categories=Office;

@@ -1,0 +1,9 @@
+Package: {{.Name}}
+Version: {{.Info.ProductVersion}}
+Section: base
+Priority: optional
+Architecture: {{.Info.Arch}}
+Depends: libwebkit2gtk-4.0-37
+Maintainer: {{.Author.Name}} <{{.Author.Email}}>
+Homepage: https://github.com/epessine/tinkerpad
+Description: {{.Info.Comments}}
