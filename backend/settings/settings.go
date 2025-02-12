@@ -3,6 +3,7 @@ package settings
 import (
 	"encoding/json"
 	"os/exec"
+	"runtime"
 	"tinkerpad/backend/logger"
 	"tinkerpad/backend/storage"
 )
@@ -103,6 +104,10 @@ func (settings *Settings) GetData() *App {
 
 func (settings *Settings) GetAppVersion() string {
 	return settings.appVersion
+}
+
+func (settings *Settings) IsLinux() bool {
+	return runtime.GOOS == "linux"
 }
 
 func (settings *Settings) Save(data *App) error {

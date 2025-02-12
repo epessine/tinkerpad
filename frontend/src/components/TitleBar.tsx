@@ -31,14 +31,14 @@ const TitleBar: Component = () => {
                 (await WindowIsMaximised()) ? WindowUnmaximise() : WindowMaximise()
             }
             on:mouseup={listener}
-            class="relative w-full text-sm text-center py-2 font-bold cursor-default select-none"
+            class="relative text-sm text-center min-h-[2.3rem] py-2 font-bold cursor-default select-none"
             style={{
                 '--wails-draggable': 'drag',
                 'background-color': generalStore.themeInfo.colors.background,
                 color: generalStore.themeInfo.colors.primary,
             }}
         >
-            tinkerpad
+            {generalStore.isLinux || 'tinkerpad'}
             <div class="absolute top-2 flex right-2 gap-2">
                 <Show when={updateStore.hasUpdate}>
                     <div
