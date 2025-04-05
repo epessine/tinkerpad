@@ -156,7 +156,7 @@ class Runner
             
             $var = (new ExecutionClosure($this->shell))->execute();
 
-            if (isset($var) && !($var instanceof NoReturnValue)) {
+            if (!($var instanceof NoReturnValue)) {
                 $this->addOutput($var);
             }
         } catch (ThrowUpException $th) {
