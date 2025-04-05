@@ -1,10 +1,11 @@
 import { Component, createMemo, createResource, createSignal, Show } from 'solid-js';
-import { useGeneralStore } from '../../stores/general';
+import { Screen, useGeneralStore } from '../../stores/general';
 import HistoryIcon from './../icons/History';
 import { GetAll } from '../../../wailsjs/go/history/History';
 import ArrowLeft from '../icons/ArrowLeft';
 import ArrowRight from '../icons/ArrowRight';
 import ViewHistoryLog from './View';
+import XMark from '../icons/XMark';
 
 const History: Component = () => {
     const [currentIndex, setCurrentIndex] = createSignal(0);
@@ -25,7 +26,11 @@ const History: Component = () => {
                 'border-color': generalStore.themeInfo.colors.secondary,
             }}
         >
-            <div class="flex mb-5 justify-between items-center gap-2 px-7">
+            <div class="flex relative mb-5 justify-between items-center gap-2 px-7">
+                <XMark
+                    class="w-5 h-5 absolute top-[0.3rem] left-[-1.5rem] cursor-pointer hover:brightness-105"
+                    on:click={() => generalStore.setCurrentScreen(Screen.Code)}
+                />
                 <h1 class="text-lg font-semibold drop-shadow">
                     <HistoryIcon class="h-5 w-5 inline mr-1.5 -mt-0.5 transition-all duration-75" />
                     History

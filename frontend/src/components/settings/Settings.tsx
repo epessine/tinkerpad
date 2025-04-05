@@ -1,9 +1,10 @@
 import { Component, For, Match, Switch } from 'solid-js';
 import General from './General';
 import Editor from './Editor';
-import { SettingsTab, useGeneralStore } from '../../stores/general';
+import { Screen, SettingsTab, useGeneralStore } from '../../stores/general';
 import Cog from '../icons/Cog';
 import About from './About';
+import XMark from '../icons/XMark';
 
 const Settings: Component = () => {
     const [generalStore] = useGeneralStore();
@@ -18,9 +19,13 @@ const Settings: Component = () => {
             }}
         >
             <div
-                class="flex flex-col gap-2 border-r px-7"
+                class="flex relative flex-col gap-2 border-r px-7"
                 style={{ 'border-color': generalStore.themeInfo.colors.secondary }}
             >
+                <XMark
+                    class="w-5 h-5 absolute top-[0.3rem] left-[-1.5rem] cursor-pointer hover:brightness-105"
+                    on:click={() => generalStore.setCurrentScreen(Screen.Code)}
+                />
                 <h1 class="text-lg mb-5 font-semibold drop-shadow">
                     <Cog class="h-5 w-5 inline mr-1.5 -mt-0.5 transition-all duration-75" />
                     Settings

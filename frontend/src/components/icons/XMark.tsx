@@ -1,6 +1,6 @@
-import { Component } from 'solid-js';
+import { Component, JSX } from 'solid-js';
 
-const XMark: Component<{ class: string }> = props => {
+const XMark: Component<JSX.SvgSVGAttributes<SVGSVGElement>> = props => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,5 @@
 import { Component, createResource, createSignal, For, Show } from 'solid-js';
-import { useGeneralStore } from '../../stores/general';
+import { Screen, useGeneralStore } from '../../stores/general';
 import Star from './../icons/Star';
 import Plus from './../icons/Plus';
 import { GetAll, Save } from '../../../wailsjs/go/favorites/Favorites';
@@ -8,6 +8,7 @@ import Create from './Create';
 import View from './View';
 import Trash from '../icons/Trash';
 import { Confirm } from '../../../wailsjs/go/dialog/Dialog';
+import XMark from '../icons/XMark';
 
 const Favorites: Component = () => {
     const [selectedFavorite, setSelectedFavorite] = createSignal<favorites.Favorite | undefined>(
@@ -43,9 +44,13 @@ const Favorites: Component = () => {
             }}
         >
             <div
-                class="flex flex-col gap-2 border-r px-7 min-w-[30%] max-w-[30%]"
+                class="flex relative flex-col gap-2 border-r px-7 min-w-[30%] max-w-[30%]"
                 style={{ 'border-color': generalStore.themeInfo.colors.secondary }}
             >
+                <XMark
+                    class="w-5 h-5 absolute top-[0.3rem] left-[-1.5rem] cursor-pointer hover:brightness-105"
+                    on:click={() => generalStore.setCurrentScreen(Screen.Code)}
+                />
                 <h1 class="text-lg mb-5 font-semibold drop-shadow">
                     <Star class="h-5 w-5 inline mr-1.5 -mt-0.5 transition-all duration-75" />
                     Favorites

@@ -13,6 +13,7 @@ import Edit from './Edit';
 import Input from '../Input';
 import Ban from '../icons/Ban';
 import { v4 } from 'uuid';
+import XMark from '../icons/XMark';
 
 const Config: Component = () => {
     let groupNameInput!: HTMLInputElement;
@@ -107,9 +108,13 @@ const Config: Component = () => {
                 }}
             >
                 <div
-                    class="flex flex-col gap-2 border-r px-7 max-h-full min-w-[30%] max-w-[30%]"
+                    class="flex relative flex-col gap-2 border-r px-7 max-h-full min-w-[30%] max-w-[30%]"
                     style={{ 'border-color': generalStore.themeInfo.colors.secondary }}
                 >
+                    <XMark
+                        class="w-5 h-5 absolute top-[0.3rem] left-[-1.5rem] cursor-pointer hover:brightness-105"
+                        on:click={() => generalStore.setCurrentScreen(Screen.Code)}
+                    />
                     <h1 class="text-lg mb-5 font-semibold drop-shadow">
                         <Server class="h-5 w-5 inline mr-1.5 -mt-0.5 transition-all duration-75" />
                         SSH
