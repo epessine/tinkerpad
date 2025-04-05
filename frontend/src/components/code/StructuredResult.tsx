@@ -25,12 +25,16 @@ const StructuredResult: Component<{ result: TabResult }> = props => {
         }
         pre.sf-dump .sf-dump-str {
             color: ${generalStore.themeInfo.colors.editor?.string};
+            word-wrap: anywhere;
         }
         pre.sf-dump .sf-dump-num {
             color: ${generalStore.themeInfo.colors.primary};
         }
         pre.sf-dump .sf-dump-index {
             color: ${generalStore.themeInfo.colors.primary};
+        }
+        pre.sf-dump .sf-dump-expanded {
+            white-space: pre-wrap;
         }
         pre.sf-dump .sf-dump-note {
             color: ${generalStore.themeInfo.colors.primary};
