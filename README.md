@@ -1,7 +1,7 @@
 <div align="center">
-<a href="https://github.com/epessine/tinkerpad/"><img src="build/appicon.png" width="120"/></a>
+<a href="https://github.com/epessine/tinkerpad/"><img src="build/appicon.png" width="150"/></a>
 </div>
-<h1 align="center">Tinkerpad</h1>
+<h1 style="margin-top: 0px;" align="center">Tinkerpad</h1>
 <div align="center">
 
 [![License](https://img.shields.io/github/license/epessine/tinkerpad)](https://github.com/epessine/tinkerpad/blob/main/LICENSE)
